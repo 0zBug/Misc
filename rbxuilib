@@ -966,9 +966,9 @@ function switch(name, path, default)
     elseif default == false then
         loadstring(path.." = false")()
         Selection2.Position = UDim2.new(0.1, 0, 0, 0)
-        Selection2.TextTransparency = 1
+        Selection2.TextTransparency = 0.5
         Selection1.Position = UDim2.new(0.5, 0, 0, 0)
-        Selection1.TextTransparency = 0.5
+        Selection1.TextTransparency = 1
     end
 
     RightButton1.MouseButton1Down:Connect(function()
