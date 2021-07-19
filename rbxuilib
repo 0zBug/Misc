@@ -1,4 +1,4 @@
-local ImageEx = syn and getsynasset or KRNL_LOADED and getcustomasset
+local ImageExp = syn and getsynasset or KRNL_LOADED and getcustomasset
 local itemholder = game.CoreGui.RobloxGui.SettingsShield.SettingsShield.MenuContainer.HubBar
 local pageview = game.CoreGui.RobloxGui.SettingsShield.SettingsShield.MenuContainer.PageViewClipper.PageView.PageViewInnerFrame
 local newTab = itemholder.RecordTab
@@ -23,7 +23,7 @@ Layout.VerticalAlignment = "Top"
 Layout.HorizontalAlignment = "Center"
 Layout.FillDirection = "Vertical"
 newtabText.Text = _G.Name
-newtabIcon.Image = ImageEx("Icon.png")
+newtabIcon.Image = ImageExp("Icon.png")
 game.RunService.Heartbeat:Connect(
     function()
         if pageview:FindFirstChild("Record") then
