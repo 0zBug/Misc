@@ -6,7 +6,7 @@ local newtabText = newTab.Icon.Title
 local newtabIcon = newTab.Icon
 local Frame = Instance.new("Frame")
 local Layout = Instance.new("UIListLayout")
-local FileName = game:GetService("HttpService"):GenerateGUID()
+local filename = game:GetService("HttpService"):GenerateGUID()
 if isfolder("Icons") == true then
     delfolder("Icons")
 end
@@ -14,7 +14,7 @@ if isfolder("rbxasset://Icons") == true then
     delfolder("rbxasset://Icons")
 end
 makefolder("Icons")
-writefile("Icons\\"..FileName..".png", game:HttpGet(_G.Icon))
+writefile("Icons\\"..filename..".png", game:HttpGet(_G.Icon))
 Frame.Visible = false
 Frame.Name = "CustomTab"
 Frame.Parent = pageview
@@ -28,7 +28,7 @@ Layout.VerticalAlignment = "Top"
 Layout.HorizontalAlignment = "Center"
 Layout.FillDirection = "Vertical"
 newtabText.Text = _G.Name
-newtabIcon.Image = ImageExp("Icons\\"..FileName..".png")
+newtabIcon.Image = ImageExp("Icons\\"..filename..".png")
 game.RunService.Heartbeat:Connect(
     function()
         if pageview:FindFirstChild("Record") then
