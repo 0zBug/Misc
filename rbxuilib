@@ -6,13 +6,10 @@ local newtabText = newTab.Icon.Title
 local newtabIcon = newTab.Icon
 local Frame = Instance.new("Frame")
 local Layout = Instance.new("UIListLayout")
-if isfile("Icon.png") == true then
+if isfile("Icon.png") == true or isfile("rbxasset://Icon.png") == true then
     delfile("Icon.png")
 end
-if isfile("rbxasset://Icon.png") == true then
-    delfile("Icon.png")
-end
-writefile("Icon.png", game:HttpGet(_G.Icon)) --https://i.ibb.co/9tJpqwN/tri-icon-40x41.png
+writefile("Icon.png", game:HttpGet(_G.Icon))
 Frame.Visible = false
 Frame.Name = "CustomTab"
 Frame.Parent = pageview
