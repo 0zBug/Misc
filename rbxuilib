@@ -1,4 +1,3 @@
---a
 local ImageExp = syn and getsynasset or KRNL_LOADED and getcustomasset
 local itemholder = game.CoreGui.RobloxGui.SettingsShield.SettingsShield.MenuContainer.HubBar
 local pageview = game.CoreGui.RobloxGui.SettingsShield.SettingsShield.MenuContainer.PageViewClipper.PageView.PageViewInnerFrame
