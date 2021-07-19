@@ -1000,6 +1000,13 @@ function switch(name, path, default)
     SwitchFrame.MouseEnter:Connect(function()
         Selection1.TextTransparency = 0
         Selection2.TextTransparency = 0
+        if default == true then
+            Selection1.Visible = true
+            Selection2.Visible = false
+        elseif default == false then
+            Selection1.Visible = false
+            Selection2.Visible = true
+        end
     end)
     
     SwitchFrame.MouseLeave:Connect(function()
