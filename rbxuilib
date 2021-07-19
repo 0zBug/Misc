@@ -997,6 +997,16 @@ function switch(name, path, default)
     Selection2.TextSize = 24.000
     Selection2.TextTransparency = 1.000
 
+    SwitchFrame.MouseEnter:Connect(function()
+        Selection1.TextTransparency = 0
+        Selection2.TextTransparency = 0
+    end)
+    
+    SwitchFrame.MouseLeave:Connect(function()
+        Selection1.TextTransparency = 0.500
+        Selection2.TextTransparency = 0.500
+    end)
+
     if default == true then
         loadstring(path.." = true")()
     elseif default == false then
@@ -1016,6 +1026,9 @@ function switch(name, path, default)
     local Tween = game:GetService("TweenService"):Create(Selection2,TweenInfo.new(0.1),{TextTransparency=0.5})
     Tween:Play()
     Selection2:TweenPosition(UDim2.new(0.1, 0, 0, 0), "Out", "Sine", 0.2)
+    wait(0.1)
+    Selection1.Visible = false
+    Selection2.Visible = true
     end)
 
     LeftButton1.MouseButton1Down:Connect(function()
@@ -1027,5 +1040,8 @@ function switch(name, path, default)
     local Tween = game:GetService("TweenService"):Create(Selection1,TweenInfo.new(0.1),{TextTransparency=0.5})
     Tween:Play()
     Selection1:TweenPosition(UDim2.new(0.1, 0, 0, 0), "Out", "Sine", 0.2)
+    wait(0.1)
+    Selection1.Visible = true
+    Selection2.Visible = false
     end)
 end
