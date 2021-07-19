@@ -867,10 +867,10 @@ function switch(name, path, default)
 
     SwitchFrame.MouseEnter:Connect(function()
         SwitchFrame.ImageTransparency = 0.5
-        if loadstring(path)() == false then
+        if tostring(path) == false then
             Selection1.TextTransparency = 0
             Selection2.TextTransparency = 1
-        elseif loadstring(path)() == true then
+        elseif tostring(path) == true then
             Selection1.TextTransparency = 1
             Selection2.TextTransparency = 0
         end
