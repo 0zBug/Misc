@@ -983,20 +983,17 @@ function switch(name, path, default)
     Selection2.TextSize = 24.000
     Selection2.TextTransparency = 1.000
 
-    first = true
+    if default == true then
+        Selection1.Visible = true
+        Selection2.Visible = false
+    elseif default == false then
+        Selection1.Visible = false
+        Selection2.Visible = true
+    end
 
     SwitchFrame.MouseEnter:Connect(function()
         Selection1.TextTransparency = 0
         Selection2.TextTransparency = 0
-        if default == true and first == true then
-            Selection1.Visible = true
-            Selection2.Visible = false
-            first = false
-        elseif default == false  and first == true then
-            Selection1.Visible = false
-            Selection2.Visible = true
-            first = false
-        end
     end)
     
     SwitchFrame.MouseLeave:Connect(function()
