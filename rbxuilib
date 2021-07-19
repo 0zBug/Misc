@@ -329,6 +329,20 @@ function slider(name, path, default, multiplier)
     RightButton_2.Image = "rbxasset://textures/ui/Settings/Slider/More.png"
     RightButton_2.ImageColor3 = Color3.fromRGB(204, 204, 204)
 
+    RightButton_2.MouseEnter:Connect(function()
+    RightButton_2.ImageColor3 = Color3.fromRGB(255, 255, 255)
+    end)
+    RightButton_2.MouseLeave:Connect(function()
+    RightButton_2.ImageColor3 = Color3.fromRGB(204, 204, 204)
+    end)
+
+    LeftButton_2.MouseEnter:Connect(function()
+    LeftButton_2.ImageColor3 = Color3.fromRGB(255, 255, 255)
+    end)
+    LeftButton_2.MouseLeave:Connect(function()
+    LeftButton_2.ImageColor3 = Color3.fromRGB(204, 204, 204)
+    end)
+
     if value == 0 then
         RightButton_2.Visible=true;RightButton.Visible=true;LeftButton_2.Visible=false;LeftButton.Visible=false;Step10.BackgroundColor3=Color3.fromRGB(78,84,96)Step9.BackgroundColor3=Color3.fromRGB(78,84,96)Step8.BackgroundColor3=Color3.fromRGB(78,84,96)Step7.BackgroundColor3=Color3.fromRGB(78,84,96)Step6.BackgroundColor3=Color3.fromRGB(78,84,96)Step5.BackgroundColor3=Color3.fromRGB(78,84,96)Step4.BackgroundColor3=Color3.fromRGB(78,84,96)Step3.BackgroundColor3=Color3.fromRGB(78,84,96)Step2.BackgroundColor3=Color3.fromRGB(78,84,96)Step1.BackgroundColor3=Color3.fromRGB(78,84,96)
         loadstring(path.." = "..value*multiplier)()
