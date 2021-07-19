@@ -1015,31 +1015,69 @@ function switch(name, path, default)
         Selection1.TextTransparency = 1
     end
 
+    local one1 = false
     RightButton1.MouseButton1Down:Connect(function()
-    Selection1:TweenPosition(UDim2.new(0.5, 0, 0, 0), "Out", "Sine", 0.2)
-    local Tween = game:GetService("TweenService"):Create(Selection1,TweenInfo.new(0.1),{TextTransparency=1})
-    Tween:Play()
-    wait()
-    loadstring(path.." = false")()
-    local Tween = game:GetService("TweenService"):Create(Selection2,TweenInfo.new(0.1),{TextTransparency=0.5})
-    Tween:Play()
-    Selection2:TweenPosition(UDim2.new(0.1, 0, 0, 0), "Out", "Sine", 0.2)
-    wait(0.1)
-    Selection1.Visible = false
-    Selection2.Visible = true
+        if one1 == false then
+           Selection2:TweenPosition(UDim2.new(0.25, 0, 0, 0), "Out", "Sine", 0.2)
+           local Tween = game:GetService("TweenService"):Create(Selection2,TweenInfo.new(0.2),{TextTransparency=1})
+           Tween:Play()
+           wait()
+           loadstring(path.." = true")()
+           Selection1.Position = UDim2.new(-0.05, 0, 0, 0)
+           Selection1.Visible = true
+           local Tween = game:GetService("TweenService"):Create(Selection1,TweenInfo.new(0.2),{TextTransparency=0})
+           Tween:Play()
+           Selection1:TweenPosition(UDim2.new(0.1, 0, 0, 0), "Out", "Sine", 0.2)
+           wait(0.1)
+           Selection2.Visible = false
+           one1 = true
+        else
+           Selection1:TweenPosition(UDim2.new(0.25, 0, 0, 0), "Out", "Sine", 0.2)
+           local Tween = game:GetService("TweenService"):Create(Selection1,TweenInfo.new(0.2),{TextTransparency=1})
+           Tween:Play()
+           wait()
+           loadstring(path.." = false")()
+           Selection2.Position = UDim2.new(-0.05, 0, 0, 0)
+           Selection2.Visible = true
+           local Tween = game:GetService("TweenService"):Create(Selection2,TweenInfo.new(0.2),{TextTransparency=0})
+           Tween:Play()
+           Selection2:TweenPosition(UDim2.new(0.1, 0, 0, 0), "Out", "Sine", 0.2)
+           wait(0.1)
+           Selection1.Visible = false
+           one1 = false
+        end
     end)
 
+    local one2 = false
     LeftButton1.MouseButton1Down:Connect(function()
-    Selection2:TweenPosition(UDim2.new(-0.25, 0, 0, 0), "Out", "Sine", 0.2)
-    local Tween = game:GetService("TweenService"):Create(Selection2,TweenInfo.new(0.1),{TextTransparency=1})
-    Tween:Play()
-    wait()
-    loadstring(path.." = true")()
-    local Tween = game:GetService("TweenService"):Create(Selection1,TweenInfo.new(0.1),{TextTransparency=0.5})
-    Tween:Play()
-    Selection1:TweenPosition(UDim2.new(0.1, 0, 0, 0), "Out", "Sine", 0.2)
-    wait(0.1)
-    Selection1.Visible = true
-    Selection2.Visible = false
+        if one2 == false then
+           Selection1:TweenPosition(UDim2.new(-0.05, 0, 0, 0), "Out", "Sine", 0.2)
+           local Tween = game:GetService("TweenService"):Create(Selection1,TweenInfo.new(0.2),{TextTransparency=1})
+           Tween:Play()
+           wait()
+           loadstring(path.." = false")()
+           Selection2.Position = UDim2.new(0.25, 0, 0, 0)
+           Selection2.Visible = true
+           local Tween = game:GetService("TweenService"):Create(Selection2,TweenInfo.new(0.2),{TextTransparency=0.5})
+           Tween:Play()
+           Selection2:TweenPosition(UDim2.new(0.1, 0, 0, 0), "Out", "Sine", 0.2)
+           wait(0.1)
+           Selection1.Visible = false
+           one2 = true
+        else
+           Selection2:TweenPosition(UDim2.new(-0.05, 0, 0, 0), "Out", "Sine", 0.2)
+           local Tween = game:GetService("TweenService"):Create(Selection2,TweenInfo.new(0.2),{TextTransparency=1})
+           Tween:Play()
+           wait()
+           loadstring(path.." = true")()
+           Selection1.Position = UDim2.new(0.25, 0, 0, 0)
+           Selection1.Visible = true
+           local Tween = game:GetService("TweenService"):Create(Selection1,TweenInfo.new(0.2),{TextTransparency=0.5})
+           Tween:Play()
+           Selection1:TweenPosition(UDim2.new(0.1, 0, 0, 0), "Out", "Sine", 0.2)
+           wait(0.1)
+           Selection2.Visible = false
+           one2 = false
+        end
     end)
 end
