@@ -983,6 +983,26 @@ function switch(name, path, default)
     Selection2.TextSize = 24.000
     Selection2.TextTransparency = 1.000
 
+    SwitchFrame.MouseEnter:Connect(function()
+        if path == false then
+            Selection1.TextTransparency = 0
+            Selection2.TextTransparency = 1
+        elseif path == true then
+            Selection1.TextTransparency = 1
+            Selection2.TextTransparency = 0
+        end
+    end)
+    SwitchFrame.MouseLeave:Connect(function()
+        if path == false then
+            Selection1.TextTransparency = 0.5
+            Selection2.TextTransparency = 1
+        elseif path == true then
+            Selection1.TextTransparency = 1
+            Selection2.TextTransparency = 0.5
+        end
+    end)
+
+
     if default == true then
         loadstring(path.." = true")()
     elseif default == false then
