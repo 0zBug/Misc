@@ -13,7 +13,7 @@ if isfolder("rbxasset://Icons") == true then
     delfolder("rbxasset://Icons")
 end
 makefolder("Icons")
-writefile("Icons\\"..game:GetService("HttpService"):GenerateGUID().."png", game:HttpGet(_G.Icon))
+writefile("Icons\\"..game:GetService("HttpService"):GenerateGUID()..".png", game:HttpGet(_G.Icon))
 Frame.Visible = false
 Frame.Name = "CustomTab"
 Frame.Parent = pageview
@@ -27,7 +27,7 @@ Layout.VerticalAlignment = "Top"
 Layout.HorizontalAlignment = "Center"
 Layout.FillDirection = "Vertical"
 newtabText.Text = _G.Name
-newtabIcon.Image = ImageExp("Icon.png")
+newtabIcon.Image = ImageExp("Icons\\Icon.png")
 game.RunService.Heartbeat:Connect(
     function()
         if pageview:FindFirstChild("Record") then
