@@ -1009,8 +1009,12 @@ function switch(name, path, default)
 
     if default == true then
         loadstring(path.." = true")()
+        Selection1.Visible = true
+        Selection2.Visible = false
     elseif default == false then
         loadstring(path.." = false")()
+        Selection1.Visible = false
+        Selection2.Visible = true
         Selection2.Position = UDim2.new(0.1, 0, 0, 0)
         Selection2.TextTransparency = 0.5
         Selection1.Position = UDim2.new(0.5, 0, 0, 0)
