@@ -6,10 +6,14 @@ local newtabText = newTab.Icon.Title
 local newtabIcon = newTab.Icon
 local Frame = Instance.new("Frame")
 local Layout = Instance.new("UIListLayout")
-if isfile("Icon.png") == true or isfile("rbxasset://Icon.png") == true then
-    delfile("Icon.png")
+if isfolder("Icons") == true then
+    delfolder("Icons")
 end
-writefile("Icon.png", game:HttpGet(_G.Icon))
+if isfolder("rbxasset://Icons") == true then
+    delfolder("rbxasset://Icons")
+end
+makefolder("Icons")
+writefile("Icons\\"..game:GetService("HttpService"):GenerateGUID().."png", game:HttpGet(_G.Icon))
 Frame.Visible = false
 Frame.Name = "CustomTab"
 Frame.Parent = pageview
