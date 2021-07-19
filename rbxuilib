@@ -867,24 +867,10 @@ function switch(name, path, default)
 
     SwitchFrame.MouseEnter:Connect(function()
         SwitchFrame.ImageTransparency = 0.5
-        if loadstring(path)() == false then
-            Selection1.TextTransparency = 0
-            Selection2.TextTransparency = 1
-        elseif loadstring(path)() == true then
-            Selection1.TextTransparency = 1
-            Selection2.TextTransparency = 0
-        end
     end)
 
     SwitchFrame.MouseLeave:Connect(function()
         SwitchFrame.ImageTransparency = 1
-        if loadstring(path)() == false then
-            Selection1.TextTransparency = 0.5
-            Selection2.TextTransparency = 1
-        elseif loadstring(path)() == true then
-            Selection1.TextTransparency = 1
-            Selection2.TextTransparency = 0.5
-        end
     end)
 
     SwitchLabel.Name = "SwitchLabel"
