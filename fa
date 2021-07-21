@@ -1,0 +1,49 @@
+_G.base = false
+_G.target = "zyxvp"
+loop = false
+
+game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
+    game.Players.LocalPlayer.Character:WaitForChild("Humanoid").Died:Connect(function()
+        loop = false
+        local ChatMain = require(game:GetService("Players").LocalPlayer:WaitForChild("PlayerScripts"):WaitForChild("ChatScript"):WaitForChild("ChatMain"))
+        ChatMain.MessagePosted:fire("-re")
+        game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
+            loop = true
+            while loop == true do
+                if _G.base == true then
+                game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = game.Workspace.TotallyNotAChairLOL["weird grass"].CFrame * CFrame.new(0,10,0)
+                else
+                game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = game.Workspace[_G.target]:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(math.random(-1,1),0,-1.5)
+                end
+            wait()
+            end
+        end)
+    end)
+end)
+
+local ChatMain = require(game:GetService("Players").LocalPlayer:WaitForChild("PlayerScripts"):WaitForChild("ChatScript"):WaitForChild("ChatMain"))
+ChatMain.MessagePosted:fire("-re")
+
+wait(0.5)
+
+game.Players.LocalPlayer.Character:WaitForChild("Humanoid").Health = 0
+
+game:GetService("Players").LocalPlayer.Chatted:Connect(function(Message)
+    if Message:lower():sub(1,6) == ">base " then
+        local state = Message:sub(7)
+
+        if state == "true" then
+            _G.base = true
+        else
+            _G.base = false
+        end
+    end
+end)
+
+game:GetService("Players").LocalPlayer.Chatted:Connect(function(Message)
+    if Message:lower():sub(1,8) == ">target " then
+        local targetholder = Message:sub(9)
+
+        _G.target = targetholder
+    end
+end)
