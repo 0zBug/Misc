@@ -1,0 +1,28 @@
+rconsolename("Console")
+rconsolename("Command Prompt")
+
+rconsoleprint("Microsoft Windows [Version 10.0.19043.1083] \n(c) Microsoft Corporation. All rights reserved. \n \n")
+
+closed = false 
+
+function exec()
+    if closed == false then
+        rconsoleprint([[C:\Users\]]..game.Players.LocalPlayer.Name.."> ")
+        local input = rconsoleinput()
+        if input == "clear" then
+            rconsoleclear()
+            rconsoleprint("Microsoft Windows [Version 10.0.19043.1083] \n(c) Microsoft Corporation. All rights reserved. \n \n")
+        elseif input == "close" then
+            rconsoleclose()
+            closed = true
+        else
+            loadstring(input)()
+            rconsoleprint("\n")
+            rconsoleprint("Executed : "..input)
+            rconsoleprint("\n \n")
+        end
+        exec()
+    end
+end
+
+exec()
