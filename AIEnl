@@ -2021,6 +2021,7 @@ Mouse.KeyDown:Connect(function(key)
 		
 		BackgroundTint.Visible = true
 		BackgroundTint.Size = UDim2.new(1, 0, 1.2, 0)
+		BlockClick.Size = UDim2.new(1, 0, 1.2, 0)
 		TaskBar.Visible = true
 		BackgroundMusicText.Visible = true
 		BackgroundOSText.Visible = true
@@ -2059,6 +2060,7 @@ Mouse.KeyDown:Connect(function(key)
 		
 		BackgroundTint.Visible = false
 		BackgroundTint.Size = UDim2.new(0, 0, 0, 0)
+		BlockClick.Size = UDim2.new(0, 0, 0, 0)
 		TaskBar.Visible = false
 		BackgroundMusicText.Visible = false
 		BackgroundOSText.Visible = false
