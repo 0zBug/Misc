@@ -3160,7 +3160,9 @@ local function BeautifyVariables(globalScope, rootScope, renameGlobals)
 	modify(rootScope)
 end
 
-function Minify(sc, renameGlobals)
+BnM = {}
+
+function BnM.Minify(sc, renameGlobals)
 	local ast = CreateLuaParser(sc)
 	local glb, root = AddVariableInfo(ast)
 	MinifyVariables_2(glb, root, renameGlobals)
@@ -3170,7 +3172,7 @@ function Minify(sc, renameGlobals)
 	return result
 end
 
-function Beautify(sc, renameVars, renameGlobals)
+function BnM.Beautify(sc, renameVars, renameGlobals)
 	local ast = CreateLuaParser(sc)
 	local glb, root = AddVariableInfo(ast)
 	if renameVars then
@@ -3181,3 +3183,5 @@ function Beautify(sc, renameVars, renameGlobals)
 
 	return result
 end
+
+return BnM
