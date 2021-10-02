@@ -1363,7 +1363,7 @@ ExecuterLineNumbers.Size = UDim2.new(0.07, 0, 1, 0)
 ExecuterLineNumbers.Font = Enum.Font.SourceSansLight
 ExecuterLineNumbers.Text = " 1"
 ExecuterLineNumbers.TextColor3 = ForegroundColor
-ExecuterLineNumbers.TextSize = 23
+ExecuterLineNumbers.TextSize = 14
 ExecuterLineNumbers.TextXAlignment = "Left"
 
 ExecuterBox:GetPropertyChangedSignal("Text"):Connect(function() 
