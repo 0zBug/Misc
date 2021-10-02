@@ -63,7 +63,7 @@ local BlurFX = Instance.new("BlurEffect")
 
 BlurFX.Size = 50
 BlurFX.Name = "MenuBlur"
-BlurFX.Parent = workspace.CurrentCamera
+BlurFX.Parent = game.Lighting
 
 local BackgroundColor = Color3.fromRGB(9, 11, 16)
 local ForegroundColor = Color3.fromRGB(143, 147, 162)
