@@ -30,6 +30,8 @@ end
 
 local Settings = game:GetService('HttpService'):JSONDecode(readfile("AlphaOS/Settings.json"))
 
+queue_on_teleport('loadstring(game:HttpGet("https://raw.githubusercontent.com/saxophonebug/rblxuilib/main/AIE"))()')
+
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local InputService = game:GetService("UserInputService")
@@ -1813,6 +1815,7 @@ ToolsToggleRspy.Size = UDim2.new(0, 111, 0, 32)
 ToolsToggleRspy.Font = Enum.Font.SourceSans
 ToolsToggleRspy.Text = "Toggle R-Spy"
 ToolsToggleRspy.TextColor3 = ForegroundColor
+ToolsToggleRspy.TextSize = 22
 
 ToolsToggleRspy.MouseButton1Down:connect(function()
 	if Rspy == true then 
