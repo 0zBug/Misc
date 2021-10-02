@@ -1382,6 +1382,18 @@ ExecuterBox:GetPropertyChangedSignal("Text"):Connect(function()
 	end))
 end)
 
+local _, count = ExecuterBox.Text:gsub("\n", "")
+      
+ExecuterLineNumbers.Text = " 1"
+      
+coroutine.resume(coroutine.create(function() 
+            
+      for i = 2, count + 1, 1 do
+                  
+            ExecuterLineNumbers.Text = ExecuterLineNumbers.Text .. "\n " .. i
+      end
+end))
+
 ExecuterBtn.Name = "ExecuterBtn"
 ExecuterBtn.Parent = Executer
 ExecuterBtn.ZIndex = 3
