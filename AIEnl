@@ -27,6 +27,7 @@ if not isfile("AlphaOS/Settings.json") then
 		["Song Position"] = 0,
 		["Song Volume"] = 3,
 		["Song Playing"] = true,
+		["Teleport ID"] = 5100950559,
 		["RemoteSpy"] = false
 	}
 	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
@@ -166,7 +167,7 @@ local ToolsPlayBtn = Instance.new("TextButton")
 local ToolsStopBtn = Instance.new("TextButton")
 local ToolsChangeBtn = Instance.new("TextButton")
 local ToolsSetBtn = Instance.new("TextButton")
-
+local ToolsTeleBtn = Instance.new("TextButton")
 --[[ TEXTBOXS ]]--
 
 local ExecuterBox = Instance.new("TextBox")
@@ -176,6 +177,7 @@ local ConsoleBox = Instance.new("TextBox")
 local ToolsMusicBox = Instance.new("TextBox")
 local ToolsVolumeBox = Instance.new("TextBox")
 
+local ToolsTeleBox = Instance.new("TextBox")
 --[[ SOME FUNCTIONS ]]--
 
 Chars = {}
@@ -1835,8 +1837,6 @@ ToolsToggleRspy.MouseButton1Down:connect(function()
 	end
 end)
 
-
-
 ToolsMusicBox.Name = "ToolsMusicBox"
 ToolsMusicBox.Parent = Tools
 ToolsMusicBox.ZIndex = 3
@@ -1853,6 +1853,49 @@ ToolsMusicBox.Text = Settings["Current Song"]
 ToolsMusicBox.TextColor3 = ForegroundColor
 ToolsMusicBox.TextSize = 25
 ToolsMusicBox.TextXAlignment = "Left"
+
+ToolsMusicBox.Changed:Connect(function()
+	Settings["Current Song"] = ToolsMusicBox.Text
+	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+end)
+
+ToolsTeleBox.Name = "ToolsTeleBox"
+ToolsTeleBox.Parent = Tools
+ToolsTeleBox.ZIndex = 3
+ToolsTeleBox.MultiLine = false
+ToolsTeleBox.ClearTextOnFocus = false
+ToolsTeleBox.TextXAlignment = "Left"
+ToolsTeleBox.TextYAlignment = "Top"
+ToolsTeleBox.BackgroundColor3 = TextBoxColor
+ToolsTeleBox.BorderColor3 = LineNumberColor
+ToolsTeleBox.Position = UDim2.new(0.428, 0, 0.55, 0)
+ToolsTeleBox.Size = UDim2.new(0.4, 0, 0.08, 0)
+ToolsTeleBox.Font = Enum.Font.SourceSansLight
+ToolsTeleBox.Text = Settings["Teleport ID"]
+ToolsTeleBox.TextColor3 = ForegroundColor
+ToolsTeleBox.TextSize = 25
+ToolsTeleBox.TextXAlignment = "Left"
+
+ToolsTeleBox.Changed:Connect(function()
+	Settings["Teleport ID"] = ToolsTeleBox.Text
+	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+end)
+
+ToolsTeleBtn.Name = "ToolsTeleBtn"
+ToolsTeleBtn.Parent = Tools
+ToolsTeleBtn.ZIndex = 3
+ToolsTeleBtn.BackgroundColor3 = BackgroundColor
+ToolsTeleBtn.BorderColor3 = BackgroundColor
+ToolsTeleBtn.Position = UDim2.new(0.428, 0, 0.66, 0)
+ToolsTeleBtn.Size = UDim2.new(0.195, 0, 0.08, 0)
+ToolsTeleBtn.Font = Enum.Font.SourceSans
+ToolsTeleBtn.Text = "Teleport"
+ToolsTeleBtn.TextColor3 = ForegroundColor
+ToolsTeleBtn.TextSize = 25
+
+ToolsTeleBtn.MouseButton1Down:Connect(function() 
+	game:GetService("TeleportService"):Teleport(tonumber(ToolsTeleBox.Text), game.Players.LocalPlayer)
+end)
 
 ToolsPlayBtn.Name = "ToolsPlayBtn"
 ToolsPlayBtn.Parent = Tools
