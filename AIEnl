@@ -2011,8 +2011,6 @@ BackgroundMusic.Pitch = 1
 BackgroundMusic.Name = "Music"
 BackgroundMusic.Looped = true ]]--
 
-print("Welcome to Alpha Inside IDE!")
-
 Mouse.KeyDown:Connect(function(key) 
 	
 	if key == "=" and not ToggleUi then
@@ -2022,6 +2020,7 @@ Mouse.KeyDown:Connect(function(key)
 		BlurFX.Size = 50
 		
 		BackgroundTint.Visible = true
+		BackgroundTint.Size = UDim2.new(1, 0, 1.2, 0)
 		TaskBar.Visible = true
 		BackgroundMusicText.Visible = true
 		BackgroundOSText.Visible = true
@@ -2049,7 +2048,7 @@ Mouse.KeyDown:Connect(function(key)
 		BackgroundMusic.Volume = MusicVolume
 		
 		game.Lighting:SetMinutesAfterMidnight(22 * 60)
-
+		
 		game:GetService('StarterGui'):SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
 		
 	elseif key == "=" and ToggleUi then
@@ -2059,6 +2058,7 @@ Mouse.KeyDown:Connect(function(key)
 		BlurFX.Size = 0
 		
 		BackgroundTint.Visible = false
+		BackgroundTint.Size = UDim2.new(0, 0, 0, 0)
 		TaskBar.Visible = false
 		BackgroundMusicText.Visible = false
 		BackgroundOSText.Visible = false
@@ -2070,7 +2070,7 @@ Mouse.KeyDown:Connect(function(key)
 		BackgroundMusic.Volume = 1
 		
 		game.Lighting:SetMinutesAfterMidnight(14 * 60)
-
+		
 		game:GetService('StarterGui'):SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, true)
 	end
 end)
