@@ -23,7 +23,7 @@ end
 if not isfile("AlphaOS/Settings.json") then
 	local Settings = {
 		["Saved Script"] = 'print("Hello, World!")',
-		["Current Song"] = 402042094,
+		["Current Song"] = 5011102700,
 		["Song Position"] = 0,
 		["Song Volume"] = 3,
 		["Song Playing"] = true,
