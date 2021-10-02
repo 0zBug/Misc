@@ -1,3 +1,4 @@
+
 if not game:IsLoaded() then
     game.Loaded:Wait()
 end
@@ -23,6 +24,11 @@ end
 if not isfile("AlphaOS/Settings.json") then
 	local Settings = {
 		["Saved Script"] = 'print("Hello, World!")',
+		["Current Song"] = 5011102700,
+		["Song Position"] = 0,
+		["Song Volume"] = 3,
+		["Song Playing"] = true,
+		["Teleport ID"] = 5100950559,
 		["RemoteSpy"] = false
 	}
 	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
@@ -30,7 +36,9 @@ end
 
 local Settings = game:GetService('HttpService'):JSONDecode(readfile("AlphaOS/Settings.json"))
 
-queue_on_teleport('loadstring(game:HttpGet("https://raw.githubusercontent.com/saxophonebug/rblxuilib/main/AIE"))()')
+BnM = loadstring(game:HttpGet("https://raw.githubusercontent.com/saxophonebug/rblxtst/main/BnM"))()
+
+queue_on_teleport('getgenv().nl = true loadstring(game:HttpGet("https://raw.githubusercontent.com/saxophonebug/rblxuilib/main/AIE"))()')
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -59,7 +67,9 @@ local BlurFX = Instance.new("BlurEffect")
 
 BlurFX.Size = 50
 BlurFX.Name = "MenuBlur"
-BlurFX.Parent = workspace.CurrentCamera
+BlurFX.Parent = game.Lighting
+
+game:GetService('StarterGui'):SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
 
 local BackgroundColor = Color3.fromRGB(9, 11, 16)
 local ForegroundColor = Color3.fromRGB(143, 147, 162)
@@ -152,6 +162,7 @@ local ExecuterBtn = Instance.new("TextButton")
 local ExecuterClearBtn = Instance.new("TextButton")
 local ExecuterOpenFileBtn = Instance.new("TextButton")
 local ExecuterSaveFileBtn = Instance.new("TextButton")
+local ExecuterBeautifyBtn = Instance.new("TextButton")
 
 local ToolsClearBtn = Instance.new("TextButton")
 local ToolsToggleRspy = Instance.new("TextButton")
@@ -160,7 +171,7 @@ local ToolsPlayBtn = Instance.new("TextButton")
 local ToolsStopBtn = Instance.new("TextButton")
 local ToolsChangeBtn = Instance.new("TextButton")
 local ToolsSetBtn = Instance.new("TextButton")
-
+local ToolsTeleBtn = Instance.new("TextButton")
 --[[ TEXTBOXS ]]--
 
 local ExecuterBox = Instance.new("TextBox")
@@ -170,6 +181,7 @@ local ConsoleBox = Instance.new("TextBox")
 local ToolsMusicBox = Instance.new("TextBox")
 local ToolsVolumeBox = Instance.new("TextBox")
 
+local ToolsTeleBox = Instance.new("TextBox")
 --[[ SOME FUNCTIONS ]]--
 
 Chars = {}
@@ -435,7 +447,7 @@ BackgroundOSText.BorderColor3 = BackgroundColor
 BackgroundOSText.Position = UDim2.new(0.005, 0, 0.955, 0)
 BackgroundOSText.Size = UDim2.new(0.1, 0, 0, 50)
 BackgroundOSText.Font = Enum.Font.SourceSansLight
-BackgroundOSText.Text = "Alpha OS 0.1 Beta"
+BackgroundOSText.Text = "Alpha OS 0.2 Beta"
 BackgroundOSText.TextColor3 = ForegroundColor
 BackgroundOSText.TextSize = 27
 BackgroundOSText.TextXAlignment = "Left"
@@ -1440,6 +1452,22 @@ ExecuterSaveFileBtn.MouseButton1Down:connect(function()
 	writefile("AlphaOS/ScriptSaves/ScriptSave-"..genstring(math.random(8, 15))..".lua", ExecuterBox.Text)
 end)
 
+ExecuterBeautifyBtn.Name = "ExecuterBeautifyBtn"
+ExecuterBeautifyBtn.Parent = Executer
+ExecuterBeautifyBtn.ZIndex = 3
+ExecuterBeautifyBtn.BackgroundColor3 = BackgroundColor
+ExecuterBeautifyBtn.BorderColor3 = BackgroundColor
+ExecuterBeautifyBtn.Position = UDim2.new(0.638, 0, 0.91, 0)
+ExecuterBeautifyBtn.Size = UDim2.new(0, 111, 0, 32)
+ExecuterBeautifyBtn.Font = Enum.Font.SourceSans
+ExecuterBeautifyBtn.Text = "Beautify"
+ExecuterBeautifyBtn.TextColor3 = ForegroundColor
+ExecuterBeautifyBtn.TextSize = 25
+
+ExecuterBeautifyBtn.MouseButton1Down:connect(function() 
+	ExecuterBox.Text = BnM.Beautify(ExecuterBox.Text)
+end)
+
 --[[ ALPHA INSIDE EXECUTER CONSOLE ]]--
 
 Console.Name = "  Console"
@@ -1829,8 +1857,6 @@ ToolsToggleRspy.MouseButton1Down:connect(function()
 	end
 end)
 
-
-
 ToolsMusicBox.Name = "ToolsMusicBox"
 ToolsMusicBox.Parent = Tools
 ToolsMusicBox.ZIndex = 3
@@ -1843,10 +1869,53 @@ ToolsMusicBox.BorderColor3 = LineNumberColor
 ToolsMusicBox.Position = UDim2.new(0.01, 0, 0.55, 0)
 ToolsMusicBox.Size = UDim2.new(0.4, 0, 0.08, 0)
 ToolsMusicBox.Font = Enum.Font.SourceSansLight
-ToolsMusicBox.Text = "4791931504"
+ToolsMusicBox.Text = Settings["Current Song"]
 ToolsMusicBox.TextColor3 = ForegroundColor
 ToolsMusicBox.TextSize = 25
 ToolsMusicBox.TextXAlignment = "Left"
+
+ToolsMusicBox.Changed:Connect(function()
+	Settings["Current Song"] = ToolsMusicBox.Text
+	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+end)
+
+ToolsTeleBox.Name = "ToolsTeleBox"
+ToolsTeleBox.Parent = Tools
+ToolsTeleBox.ZIndex = 3
+ToolsTeleBox.MultiLine = false
+ToolsTeleBox.ClearTextOnFocus = false
+ToolsTeleBox.TextXAlignment = "Left"
+ToolsTeleBox.TextYAlignment = "Top"
+ToolsTeleBox.BackgroundColor3 = TextBoxColor
+ToolsTeleBox.BorderColor3 = LineNumberColor
+ToolsTeleBox.Position = UDim2.new(0.428, 0, 0.55, 0)
+ToolsTeleBox.Size = UDim2.new(0.4, 0, 0.08, 0)
+ToolsTeleBox.Font = Enum.Font.SourceSansLight
+ToolsTeleBox.Text = Settings["Teleport ID"]
+ToolsTeleBox.TextColor3 = ForegroundColor
+ToolsTeleBox.TextSize = 25
+ToolsTeleBox.TextXAlignment = "Left"
+
+ToolsTeleBox.Changed:Connect(function()
+	Settings["Teleport ID"] = ToolsTeleBox.Text
+	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+end)
+
+ToolsTeleBtn.Name = "ToolsTeleBtn"
+ToolsTeleBtn.Parent = Tools
+ToolsTeleBtn.ZIndex = 3
+ToolsTeleBtn.BackgroundColor3 = BackgroundColor
+ToolsTeleBtn.BorderColor3 = BackgroundColor
+ToolsTeleBtn.Position = UDim2.new(0.428, 0, 0.66, 0)
+ToolsTeleBtn.Size = UDim2.new(0.195, 0, 0.08, 0)
+ToolsTeleBtn.Font = Enum.Font.SourceSans
+ToolsTeleBtn.Text = "Teleport"
+ToolsTeleBtn.TextColor3 = ForegroundColor
+ToolsTeleBtn.TextSize = 25
+
+ToolsTeleBtn.MouseButton1Down:Connect(function() 
+	game:GetService("TeleportService"):Teleport(tonumber(ToolsTeleBox.Text), game.Players.LocalPlayer)
+end)
 
 ToolsPlayBtn.Name = "ToolsPlayBtn"
 ToolsPlayBtn.Parent = Tools
@@ -1861,6 +1930,8 @@ ToolsPlayBtn.TextColor3 = ForegroundColor
 ToolsPlayBtn.TextSize = 25
 
 ToolsPlayBtn.MouseButton1Down:Connect(function() 
+	Settings["Song Playing"] = true
+	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
 	
 	BackgroundMusic:Resume()
 end)
@@ -1878,6 +1949,8 @@ ToolsStopBtn.TextColor3 = ForegroundColor
 ToolsStopBtn.TextSize = 25
 
 ToolsStopBtn.MouseButton1Down:Connect(function() 
+	Settings["Song Playing"] = false
+	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
 	
 	BackgroundMusic:Pause()
 end)
@@ -1894,7 +1967,7 @@ ToolsVolumeBox.BorderColor3 = LineNumberColor
 ToolsVolumeBox.Position = UDim2.new(0.01, 0, 0.77, 0)
 ToolsVolumeBox.Size = UDim2.new(0.4, 0, 0.08, 0)
 ToolsVolumeBox.Font = Enum.Font.SourceSansLight
-ToolsVolumeBox.Text = "3"
+ToolsVolumeBox.Text = tostring(Settings["Song Volume"])
 ToolsVolumeBox.TextColor3 = ForegroundColor
 ToolsVolumeBox.TextSize = 25
 ToolsVolumeBox.TextXAlignment = "Left"
@@ -1919,11 +1992,15 @@ ToolsChangeBtn.MouseButton1Down:Connect(function()
 	
 	BackgroundMusic:Stop()
 	
-	BackgroundMusic.Volume = 3
+	BackgroundMusic.Volume = Settings["Song Volume"]
 	BackgroundMusic.TimePosition = 0
 	BackgroundMusic.PlaybackSpeed = 1
 	BackgroundMusic.Pitch = 1
 	BackgroundMusic.SoundId = "rbxassetid://" .. ToolsMusicBox.Text
+	
+	Settings["Current Song"] = ToolsMusicBox.Text
+	Settings["Song Position"] = 0
+	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
 	
 	BackgroundMusic:Play()
 end)
@@ -1941,265 +2018,305 @@ ToolsSetBtn.TextColor3 = ForegroundColor
 ToolsSetBtn.TextSize = 25
 
 ToolsSetBtn.MouseButton1Down:Connect(function() 
-	
 	MusicVolume = tonumber(ToolsVolumeBox.Text)
+	Settings["Song Volume"] = tonumber(ToolsVolumeBox.Text)
+	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
 	
 	BackgroundMusic.Volume = tonumber(ToolsVolumeBox.Text)
 end)
 
---[[ MAIN SOURCE ]]--
+if nl then
+	local SoundAsset = game:GetService("MarketplaceService"):GetProductInfo(Settings["Current Song"])
+	BackgroundMusicText.Text = "Now Playing : " .. SoundAsset.Name
 
-function PixelBlock(bonuspeed, FastSpeed, type, pos ,x1, y1 ,z1, value, color, outerpos) 
-	
-	local type = type
-	
-	local rng = Instance.new("Part", Character)
-	rng.Anchored = true
-	rng.BrickColor = color
-	rng.CanCollide = false
-	rng.FormFactor = 3
-	rng.Name = "Ring"
-	rng.Material = "Neon"
-	rng.Size = Vector3.new(1, 1, 1)
-	rng.Transparency = 0
-	rng.TopSurface = 0
-	rng.BottomSurface = 0
-	rng.CFrame = pos
-	rng.CFrame = rng.CFrame + rng.CFrame.lookVector*outerpos
+	BackgroundMusic:Stop()
 
-	local rngm = Instance.new("SpecialMesh", rng)
-	rngm.MeshType = "Brick"
-	rngm.Scale = Vector3.new(x1,y1,z1)
-	
-	local scaler2 = 1
-	local speeder = FastSpeed/10
-	
-	if type == "Add" then
-		
-		scaler2 = 1*value
-		
-	elseif type == "Divide" then
-		
-		scaler2 = 1/value
-	end
-	
+	BackgroundMusic.Volume = Settings["Song Volume"]
+	BackgroundMusic.TimePosition = Settings["Song Position"]
+	BackgroundMusic.PlaybackSpeed = 1
+	BackgroundMusic.Pitch = 1
+	BackgroundMusic.SoundId = "rbxassetid://" .. Settings["Current Song"]
+
 	coroutine.resume(coroutine.create(function() 
+		while wait(1) do
+			Settings["Song Position"] = BackgroundMusic.TimePosition
+			
+			writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+		end
+	end))
+
+	if Settings["Song Playing"] == true then
+		BackgroundMusic:Play()
+	end
+
+	BackgroundMusicText.Visible = true
+	BackgroundOSText.Visible = true
+
+	game.Lighting:SetMinutesAfterMidnight(22 * 60)
+
+	BackgroundMusicText.Visible = true
+	BackgroundOSText.Visible = true
+	BackgroundTint.Visible = true
+	TaskBar.Visible = true
+	Executer.Visible = true
+	Console.Visible = true
+	Files.Visible = true
+	Tools.Visible = true
+
+	MusicVolume = 3
+else
+	function PixelBlock(bonuspeed, FastSpeed, type, pos ,x1, y1 ,z1, value, color, outerpos) 
+		local type = type
 		
-		for i = 0,10 / bonuspeed,0.1 do
+		local rng = Instance.new("Part", Character)
+		rng.Anchored = true
+		rng.BrickColor = color
+		rng.CanCollide = false
+		rng.FormFactor = 3
+		rng.Name = "Ring"
+		rng.Material = "Neon"
+		rng.Size = Vector3.new(1, 1, 1)
+		rng.Transparency = 0
+		rng.TopSurface = 0
+		rng.BottomSurface = 0
+		rng.CFrame = pos
+		rng.CFrame = rng.CFrame + rng.CFrame.lookVector*outerpos
+
+		local rngm = Instance.new("SpecialMesh", rng)
+		rngm.MeshType = "Brick"
+		rngm.Scale = Vector3.new(x1,y1,z1)
+		
+		local scaler2 = 1
+		local speeder = FastSpeed/10
+		
+		if type == "Add" then
 			
-			RunService.Stepped:wait(0)
+			scaler2 = 1*value
 			
-			if type == "Add" then
-				
-				scaler2 = scaler2 - 0.01*value/bonuspeed
-				
-			elseif type == "Divide" then
-				
-				scaler2 = scaler2 - 0.01/value*bonuspeed
-			end
+		elseif type == "Divide" then
 			
-			speeder = speeder - 0.01*FastSpeed*bonuspeed/10
-			
-			rng.CFrame = rng.CFrame + rng.CFrame.lookVector*speeder*bonuspeed
-			rngm.Scale = rngm.Scale - Vector3.new(scaler2*bonuspeed, scaler2*bonuspeed, scaler2*bonuspeed)
-			
-			-- rng.Transparency = rng.Transparency + 0.01*bonuspeed
+			scaler2 = 1/value
 		end
 		
-		rng:Destroy()
-	end))
-end
-
-wait(1)
-
-local originalBarSize = LoadBar.Size
-local processList = {"Loading scripts..", "Loading datas..", "Loading guis..", "Loading console..", "Loading tools.."}
-
-LoadBar.Size = UDim2.new(0, 0, 0.005, 0)
-Loader.Transparency = 1
-Loader.Visible = true
-
-coroutine.resume(coroutine.create(function() 
-	
-	for i = 20,0,-1 do
-		
-		Loader.Transparency = i / 20
-		
-		wait()
-	end
-end))
-
-BlockClick.Visible = false
-
-for i = 1, 5, 1 do
-	
-	LoaderProc.Text = processList[i]
-	
-	for j = 5, 50, 2 do
+		coroutine.resume(coroutine.create(function() 
 			
-		LoadBar.Size = UDim2.new((j / 500), 0, 0.005, 0)
-		
-		wait()
+			for i = 0,10 / bonuspeed,0.1 do
+				
+				RunService.Stepped:wait(0)
+				
+				if type == "Add" then
+					
+					scaler2 = scaler2 - 0.01*value/bonuspeed
+					
+				elseif type == "Divide" then
+					
+					scaler2 = scaler2 - 0.01/value*bonuspeed
+				end
+				
+				speeder = speeder - 0.01*FastSpeed*bonuspeed/10
+				
+				rng.CFrame = rng.CFrame + rng.CFrame.lookVector*speeder*bonuspeed
+				rngm.Scale = rngm.Scale - Vector3.new(scaler2*bonuspeed, scaler2*bonuspeed, scaler2*bonuspeed)
+				
+				-- rng.Transparency = rng.Transparency + 0.01*bonuspeed
+			end
+			
+			rng:Destroy()
+		end))
 	end
+
+	wait(1)
+
+	local originalBarSize = LoadBar.Size
+	local processList = {"Loading scripts..", "Loading datas..", "Loading guis..", "Loading console..", "Loading tools.."}
+
+	LoadBar.Size = UDim2.new(0, 0, 0.005, 0)
+	Loader.Transparency = 1
+	Loader.Visible = true
+
+	coroutine.resume(coroutine.create(function() 
+		
+		for i = 20,0,-1 do
+			
+			Loader.Transparency = i / 20
+			
+			wait()
+		end
+	end))
+
+	BlockClick.Visible = false
+
+	for i = 1, 5, 1 do
+		
+		LoaderProc.Text = processList[i]
+		
+		for j = 5, 50, 2 do
+				
+			LoadBar.Size = UDim2.new((j / 500), 0, 0.005, 0)
+			
+			wait()
+		end
+	end
+
+	coroutine.resume(coroutine.create(function() 
+		
+		for i = 0,20,1 do
+			
+			Loader.Transparency = i / 20
+			
+			wait()
+		end
+		
+		Loader.Visible = false
+	end))
+
+	wait(.5)
+
+	Logon.Transparency = 1
+	Logon.Visible = true
+
+	coroutine.resume(coroutine.create(function() 
+		
+		for i = 20,0,-1 do
+			
+			Logon.Transparency = i / 40 + 0.5
+			
+			wait()
+		end
+	end))
+
+	wait(1)
+
+	local SoundAsset = game:GetService("MarketplaceService"):GetProductInfo(Settings["Current Song"])
+
+	BackgroundMusicText.Text = "Now Playing : " .. SoundAsset.Name
+
+	BackgroundMusic:Stop()
+
+	BackgroundMusic.Volume = Settings["Song Volume"]
+	BackgroundMusic.TimePosition = Settings["Song Position"]
+	BackgroundMusic.PlaybackSpeed = 1
+	BackgroundMusic.Pitch = 1
+	BackgroundMusic.SoundId = "rbxassetid://" .. Settings["Current Song"]
+
+	coroutine.resume(coroutine.create(function() 
+		while wait(1) do
+			Settings["Song Position"] = BackgroundMusic.TimePosition
+			
+			writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+		end
+	end))
+
+	if Settings["Song Playing"] == true then
+		BackgroundMusic:Play()
+	end
+
+	coroutine.resume(coroutine.create(function() 
+		
+		for i = 100,0,-1 do
+			
+			LogonWelcome.TextTransparency = i / 100
+			
+			wait()
+		end
+	end))
+
+	LogonWelcome:TweenPosition(UDim2.new(0.42, 0, 0.46, 0), "Out", "Sine", .5, false)
+
+	wait(3)
+
+	LogonWelcome:TweenPosition(UDim2.new(0.42, 0, 0.35, 0), "Out", "Sine", .5, false)
+
+	wait(.1)
+
+	BackgroundMusicText.Visible = true
+	BackgroundOSText.Visible = true
+	LogonLogin.Visible = true
+
+	game.Lighting:SetMinutesAfterMidnight(22 * 60)
+
+	for i = 0, 49 do
+		
+		PixelBlock(1,math.random(1,20),"Add",RootPart.CFrame*CFrame.Angles(math.rad(math.random(-360,360)),math.rad(math.random(-360,360)),math.rad(math.random(-360,360))),2,2,2,0.04,BrickColor.new("White"),0)
+	end
+
+	coroutine.resume(coroutine.create(function() 
+		
+		for i = 20,0,-1 do
+			
+			LogonLogo.TextTransparency = i / 20
+			LogonTitle.TextTransparency = i / 20
+			LogonDesc.TextTransparency = i / 20
+			
+			wait()
+		end
+	end))
+
+	repeat wait() until ToggleUi
+
+	coroutine.resume(coroutine.create(function() 
+		
+		for i = 0,20,1 do
+			
+			LogonWelcome.TextTransparency = i / 20
+			LogonLogo.TextTransparency = i / 20
+			LogonTitle.TextTransparency = i / 20
+			LogonDesc.TextTransparency = i / 20
+			
+			wait()
+		end
+		
+		LogonLogin.Visible = false
+	end))
+
+	coroutine.resume(coroutine.create(function() 
+		
+		for i = 0,20,1 do
+			
+			Logon.Transparency = i / 40 + 0.5
+			
+			wait()
+		end
+		
+		Logon.Visible = false
+	end))
+
+	wait(2)
+
+	BackgroundMusicText.Visible = true
+
+	wait(0.05)
+
+	BackgroundOSText.Visible = true
+
+	wait(0.05)
+
+	BackgroundTint.Visible = true
+
+	wait(0.05)
+
+	TaskBar.Visible = true
+
+	wait(0.05)
+
+	Executer.Visible = true
+
+	wait(0.05)
+
+	Console.Visible = true
+
+	wait(0.05)
+
+	Files.Visible = true
+
+	wait(0.05)
+
+	Tools.Visible = true
+
+	wait(0.05)
+
+	MusicVolume = 3
 end
-
-coroutine.resume(coroutine.create(function() 
-	
-	for i = 0,20,1 do
-		
-		Loader.Transparency = i / 20
-		
-		wait()
-	end
-	
-	Loader.Visible = false
-end))
-
-wait(.5)
-
-Logon.Transparency = 1
-Logon.Visible = true
-
-coroutine.resume(coroutine.create(function() 
-	
-	for i = 20,0,-1 do
-		
-		Logon.Transparency = i / 40 + 0.5
-		
-		wait()
-	end
-end))
-
-wait(1)
-
-local SoundAsset = game:GetService("MarketplaceService"):GetProductInfo(5011102700)
-
-BackgroundMusicText.Text = "Now Playing : " .. SoundAsset.Name
-
-BackgroundMusic:Stop()
-
-BackgroundMusic.Volume = 3
-BackgroundMusic.TimePosition = 0
-BackgroundMusic.PlaybackSpeed = 1
-BackgroundMusic.Pitch = 1
-BackgroundMusic.SoundId = "rbxassetid://5011102700"
-
-BackgroundMusic:Play()
-
-coroutine.resume(coroutine.create(function() 
-	
-	for i = 100,0,-1 do
-		
-		LogonWelcome.TextTransparency = i / 100
-		
-		wait()
-	end
-end))
-
-LogonWelcome:TweenPosition(UDim2.new(0.42, 0, 0.46, 0), "Out", "Sine", .5, false)
-
-wait(3)
-
-LogonWelcome:TweenPosition(UDim2.new(0.42, 0, 0.35, 0), "Out", "Sine", .5, false)
-
-wait(.1)
-
-BackgroundMusicText.Visible = true
-BackgroundOSText.Visible = true
-LogonLogin.Visible = true
-
-game.Lighting:SetMinutesAfterMidnight(22 * 60)
-
-for i = 0, 49 do
-	
-	PixelBlock(1,math.random(1,20),"Add",RootPart.CFrame*CFrame.Angles(math.rad(math.random(-360,360)),math.rad(math.random(-360,360)),math.rad(math.random(-360,360))),2,2,2,0.04,BrickColor.new("White"),0)
-end
-
-coroutine.resume(coroutine.create(function() 
-	
-	for i = 20,0,-1 do
-		
-		LogonLogo.TextTransparency = i / 20
-		LogonTitle.TextTransparency = i / 20
-		LogonDesc.TextTransparency = i / 20
-		
-		wait()
-	end
-end))
-
-repeat wait() until ToggleUi
-
-coroutine.resume(coroutine.create(function() 
-	
-	for i = 0,20,1 do
-		
-		LogonWelcome.TextTransparency = i / 20
-		LogonLogo.TextTransparency = i / 20
-		LogonTitle.TextTransparency = i / 20
-		LogonDesc.TextTransparency = i / 20
-		
-		wait()
-	end
-	
-	LogonLogin.Visible = false
-end))
-
-coroutine.resume(coroutine.create(function() 
-	
-	for i = 0,20,1 do
-		
-		Logon.Transparency = i / 40 + 0.5
-		
-		wait()
-	end
-	
-	Logon.Visible = false
-end))
-
-wait(2)
-
-BackgroundMusicText.Visible = true
-
-wait(0.05)
-
-BackgroundOSText.Visible = true
-
-wait(0.05)
-
-BackgroundTint.Visible = true
-
-wait(0.05)
-
-TaskBar.Visible = true
-
-wait(0.05)
-
-Executer.Visible = true
-
-wait(0.05)
-
-Console.Visible = true
-
-wait(0.05)
-
-Files.Visible = true
-
-wait(0.05)
-
-Tools.Visible = true
-
-wait(0.05)
-
-MusicVolume = 3
-
---[[ BackgroundMusic.Volume = 3
-BackgroundMusic.TimePosition = 0
-BackgroundMusic.PlaybackSpeed = 1
-BackgroundMusic.Pitch = 1
-BackgroundMusic.Name = "Music"
-BackgroundMusic.Looped = true ]]--
-
-print("Welcome to Alpha Inside IDE!")
 
 Mouse.KeyDown:Connect(function(key) 
 	
@@ -2210,6 +2327,8 @@ Mouse.KeyDown:Connect(function(key)
 		BlurFX.Size = 50
 		
 		BackgroundTint.Visible = true
+		BackgroundTint.Size = UDim2.new(1, 0, 1.2, 0)
+		BlockClick.Size = UDim2.new(1, 0, 1.2, 0)
 		TaskBar.Visible = true
 		BackgroundMusicText.Visible = true
 		BackgroundOSText.Visible = true
@@ -2238,6 +2357,8 @@ Mouse.KeyDown:Connect(function(key)
 		
 		game.Lighting:SetMinutesAfterMidnight(22 * 60)
 		
+		game:GetService('StarterGui'):SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
+		
 	elseif key == "=" and ToggleUi then
 		
 		ToggleUi = false
@@ -2245,6 +2366,8 @@ Mouse.KeyDown:Connect(function(key)
 		BlurFX.Size = 0
 		
 		BackgroundTint.Visible = false
+		BackgroundTint.Size = UDim2.new(0, 0, 0, 0)
+		BlockClick.Size = UDim2.new(0, 0, 0, 0)
 		TaskBar.Visible = false
 		BackgroundMusicText.Visible = false
 		BackgroundOSText.Visible = false
@@ -2256,5 +2379,7 @@ Mouse.KeyDown:Connect(function(key)
 		BackgroundMusic.Volume = 1
 		
 		game.Lighting:SetMinutesAfterMidnight(14 * 60)
+		
+		game:GetService('StarterGui'):SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, true)
 	end
 end)
