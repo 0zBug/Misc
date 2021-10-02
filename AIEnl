@@ -30,7 +30,7 @@ end
 
 local Settings = game:GetService('HttpService'):JSONDecode(readfile("AlphaOS/Settings.json"))
 
-queue_on_teleport('loadstring(game:HttpGet("https://raw.githubusercontent.com/saxophonebug/rblxuilib/main/AIE"))()')
+queue_on_teleport('loadstring(game:HttpGet("https://raw.githubusercontent.com/saxophonebug/rblxuilib/main/AIEnl"))()')
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
