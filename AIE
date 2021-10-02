@@ -70,6 +70,7 @@ BlurFX.Name = "MenuBlur"
 BlurFX.Parent = game.Lighting
 
 game:GetService('StarterGui'):SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
+game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, false)
 
 local BackgroundColor = Color3.fromRGB(9, 11, 16)
 local ForegroundColor = Color3.fromRGB(143, 147, 162)
@@ -2358,6 +2359,7 @@ Mouse.KeyDown:Connect(function(key)
 		game.Lighting:SetMinutesAfterMidnight(22 * 60)
 		
 		game:GetService('StarterGui'):SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
+		game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, false)
 		
 	elseif key == "=" and ToggleUi then
 		
@@ -2381,5 +2383,6 @@ Mouse.KeyDown:Connect(function(key)
 		game.Lighting:SetMinutesAfterMidnight(14 * 60)
 		
 		game:GetService('StarterGui'):SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, true)
+		game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, true)
 	end
 end)
