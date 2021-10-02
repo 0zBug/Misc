@@ -23,6 +23,10 @@ end
 if not isfile("AlphaOS/Settings.json") then
 	local Settings = {
 		["Saved Script"] = 'print("Hello, World!")',
+		["Current Song"] = 402042094,
+		["Song Position"] = 0,
+		["Song Volume"] = 3,
+		["Song Playing"] = true,
 		["RemoteSpy"] = false
 	}
 	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
@@ -435,7 +439,7 @@ BackgroundOSText.BorderColor3 = BackgroundColor
 BackgroundOSText.Position = UDim2.new(0.005, 0, 0.955, 0)
 BackgroundOSText.Size = UDim2.new(0.1, 0, 0, 50)
 BackgroundOSText.Font = Enum.Font.SourceSansLight
-BackgroundOSText.Text = "Alpha OS 0.1 Beta"
+BackgroundOSText.Text = "Alpha OS 0.2 Beta"
 BackgroundOSText.TextColor3 = ForegroundColor
 BackgroundOSText.TextSize = 27
 BackgroundOSText.TextXAlignment = "Left"
@@ -1843,7 +1847,7 @@ ToolsMusicBox.BorderColor3 = LineNumberColor
 ToolsMusicBox.Position = UDim2.new(0.01, 0, 0.55, 0)
 ToolsMusicBox.Size = UDim2.new(0.4, 0, 0.08, 0)
 ToolsMusicBox.Font = Enum.Font.SourceSansLight
-ToolsMusicBox.Text = "4791931504"
+ToolsMusicBox.Text = Settings["Current Song"]
 ToolsMusicBox.TextColor3 = ForegroundColor
 ToolsMusicBox.TextSize = 25
 ToolsMusicBox.TextXAlignment = "Left"
@@ -1861,6 +1865,8 @@ ToolsPlayBtn.TextColor3 = ForegroundColor
 ToolsPlayBtn.TextSize = 25
 
 ToolsPlayBtn.MouseButton1Down:Connect(function() 
+	Settings["Song Playing"] = true
+	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
 	
 	BackgroundMusic:Resume()
 end)
@@ -1878,6 +1884,8 @@ ToolsStopBtn.TextColor3 = ForegroundColor
 ToolsStopBtn.TextSize = 25
 
 ToolsStopBtn.MouseButton1Down:Connect(function() 
+	Settings["Song Playing"] = false
+	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
 	
 	BackgroundMusic:Pause()
 end)
@@ -1894,7 +1902,7 @@ ToolsVolumeBox.BorderColor3 = LineNumberColor
 ToolsVolumeBox.Position = UDim2.new(0.01, 0, 0.77, 0)
 ToolsVolumeBox.Size = UDim2.new(0.4, 0, 0.08, 0)
 ToolsVolumeBox.Font = Enum.Font.SourceSansLight
-ToolsVolumeBox.Text = "3"
+ToolsVolumeBox.Text = tostring(Settings["Song Volume"])
 ToolsVolumeBox.TextColor3 = ForegroundColor
 ToolsVolumeBox.TextSize = 25
 ToolsVolumeBox.TextXAlignment = "Left"
@@ -1919,11 +1927,15 @@ ToolsChangeBtn.MouseButton1Down:Connect(function()
 	
 	BackgroundMusic:Stop()
 	
-	BackgroundMusic.Volume = 3
+	BackgroundMusic.Volume = Settings["Song Volume"]
 	BackgroundMusic.TimePosition = 0
 	BackgroundMusic.PlaybackSpeed = 1
 	BackgroundMusic.Pitch = 1
 	BackgroundMusic.SoundId = "rbxassetid://" .. ToolsMusicBox.Text
+	
+	Settings["Current Song"] = ToolsMusicBox.Text
+	Settings["Song Position"] = 0
+	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
 	
 	BackgroundMusic:Play()
 end)
@@ -1941,27 +1953,38 @@ ToolsSetBtn.TextColor3 = ForegroundColor
 ToolsSetBtn.TextSize = 25
 
 ToolsSetBtn.MouseButton1Down:Connect(function() 
-	
 	MusicVolume = tonumber(ToolsVolumeBox.Text)
+	Settings["Song Volume"] = tonumber(ToolsVolumeBox.Text)
+	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
 	
 	BackgroundMusic.Volume = tonumber(ToolsVolumeBox.Text)
 end)
 
 --[[ MAIN SOURCE ]]--
 
-local SoundAsset = game:GetService("MarketplaceService"):GetProductInfo(5011102700)
+local SoundAsset = game:GetService("MarketplaceService"):GetProductInfo(Settings["Current Song"])
 
 BackgroundMusicText.Text = "Now Playing : " .. SoundAsset.Name
 
 BackgroundMusic:Stop()
 
-BackgroundMusic.Volume = 3
-BackgroundMusic.TimePosition = 0
+BackgroundMusic.Volume = Settings["Song Volume"]
+BackgroundMusic.TimePosition = Settings["Song Position"]
 BackgroundMusic.PlaybackSpeed = 1
 BackgroundMusic.Pitch = 1
-BackgroundMusic.SoundId = "rbxassetid://5011102700"
+BackgroundMusic.SoundId = "rbxassetid://" .. Settings["Current Song"]
 
-BackgroundMusic:Play()
+coroutine.resume(coroutine.create(function() 
+	while wait(1) do
+		Settings["Song Position"] = BackgroundMusic.TimePosition
+		
+		writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+	end
+end))
+
+if Settings["Song Playing"] == true then
+	BackgroundMusic:Play()
+end
 
 BackgroundMusicText.Visible = true
 BackgroundOSText.Visible = true
