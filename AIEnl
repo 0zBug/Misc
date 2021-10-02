@@ -65,6 +65,8 @@ BlurFX.Size = 50
 BlurFX.Name = "MenuBlur"
 BlurFX.Parent = game.Lighting
 
+game:GetService('StarterGui'):SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
+
 local BackgroundColor = Color3.fromRGB(9, 11, 16)
 local ForegroundColor = Color3.fromRGB(143, 147, 162)
 local BackgroundTintColor = Color3.fromRGB(20, 20, 20)
@@ -2047,6 +2049,8 @@ Mouse.KeyDown:Connect(function(key)
 		BackgroundMusic.Volume = MusicVolume
 		
 		game.Lighting:SetMinutesAfterMidnight(22 * 60)
+
+		game:GetService('StarterGui'):SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
 		
 	elseif key == "=" and ToggleUi then
 		
@@ -2066,5 +2070,7 @@ Mouse.KeyDown:Connect(function(key)
 		BackgroundMusic.Volume = 1
 		
 		game.Lighting:SetMinutesAfterMidnight(14 * 60)
+
+		game:GetService('StarterGui'):SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, true)
 	end
 end)
