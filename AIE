@@ -49,13 +49,14 @@ if not isfile("AlphaOS/Settings.json") then
 end
 
 if not isfile("AlphaOS/Tools.json") then
-	local Tools = {
+	local ToolSaves = {
 		["Current Song"] = 5011102700,
 		["Song Position"] = 0,
 		["Song Volume"] = 3,
 		["Song Playing"] = true,
 		["Teleport ID"] = 5100950559
 	}
+	
 	writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(ToolSaves))
 end
 
