@@ -15,7 +15,7 @@ defaultProperties.Parent = workspace
 defaultPart:Destroy()
 local F3X = {}
 function F3X.Object(object)
-    if v then
+    if object then
     local properties = {}
     if object:IsA("BasePart") then
         for _,property in pairs(validPartProperties) do
