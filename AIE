@@ -71,13 +71,13 @@ if CustomUI then
     	CustomUIText = [[getgenv().CustomUI = {
 		["Rounded"] = ]] .. CustomUI["Rounded"] .. [[,
 		["Colors"] = {
-			["Background Color"] = ]] .. CustomUI["Colors"]["Background Color"] .. [[,
-			["Foreground Color"] = ]] .. CustomUI["Colors"]["Foreground Color"] .. [[,
-			["Background Tint Color"] = ]] .. CustomUI["Colors"]["Background Tint Color"] .. [[,
-			["TextBox Color"] = ]] .. CustomUI["Colors"]["TextBox Color"] .. [[,
-			["Line Number Color"] = ]] .. CustomUI["Colors"]["Line Number Color"] ..[[,
-			["Pinned Color"] = ]] ..  CustomUI["Colors"]["Pinned Color"] .. [[,
-			["Unpinned Color"] = ]] .. CustomUI["Colors"]["Unpinned Color"] .. [[
+			["Background Color"] = Color3.new(]] .. tostring(CustomUI["Colors"]["Background Color"]) .. [[),
+			["Foreground Color"] = Color3.new(]] .. tostring(CustomUI["Colors"]["Foreground Color"]) .. [[),
+			["Background Tint Color"] = Color3.new(]] .. tostring(CustomUI["Colors"]["Background Tint Color"]) .. [[),
+			["TextBox Color"] = Color3.new(]] .. tostring(CustomUI["Colors"]["TextBox Color"]) .. [[),
+			["Line Number Color"] = Color3.new(]] .. tostring(CustomUI["Colors"]["Line Number Color"]) ..[[),
+			["Pinned Color"] = Color3.new(]] ..  tostring(CustomUI["Colors"]["Pinned Color"]) .. [[),
+			["Unpinned Color"] = Color3.new(]] .. tostring(CustomUI["Colors"]["Unpinned Color"]) .. [[)
 		}
 	}]]
 
