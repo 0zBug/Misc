@@ -29,14 +29,16 @@ if not isfile("AlphaOS/Assets/Pin.png") then
 	writefile("AlphaOS/Assets/Pin.png", game:HttpGet("https://i.ibb.co/Wp9HrZD/Pin-Button.png"))
 end
 
+if not isfolder("AlphaOS/Tabs") then
+	makefolder("AlphaOS/Tabs")
+end
+
+if not isfile("AlphaOS/Tabs/Script1.lua") then
+	writefile("AlphaOS/Tabs/Script1.lua", 'print("Hello, World!")')
+end
+
 if not isfile("AlphaOS/Settings.json") then
 	local Settings = {
-		["Saved Script"] = 'print("Hello, World!")',
-		["Current Song"] = 5011102700,
-		["Song Position"] = 0,
-		["Song Volume"] = 3,
-		["Song Playing"] = true,
-		["Teleport ID"] = 5100950559,
 		["RemoteSpy"] = false,
 		["Executer Pinned"] = false,
 		["Tools Pinned"] = false,
@@ -46,7 +48,21 @@ if not isfile("AlphaOS/Settings.json") then
 	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
 end
 
+if not isfile("AlphaOS/Tools.json") then
+	local Tools = {
+		["Current Song"] = 5011102700,
+		["Song Position"] = 0,
+		["Song Volume"] = 3,
+		["Song Playing"] = true,
+		["Teleport ID"] = 5100950559
+	}
+	writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(Tools))
+end
+
 local Settings = game:GetService('HttpService'):JSONDecode(readfile("AlphaOS/Settings.json"))
+local ToolSaves = game:GetService('HttpService'):JSONDecode(readfile("AlphaOS/Tools.json"))
+
+local SavedScript = readfile("AlphaOS/Tabs/Script1.lua")
 
 BnM = loadstring(game:HttpGet("https://raw.githubusercontent.com/saxophonebug/rblxtst/main/BnM"))()
 
@@ -89,6 +105,8 @@ local ForegroundColor = Color3.fromRGB(143, 147, 162)
 local BackgroundTintColor = Color3.fromRGB(20, 20, 20)
 local TextBoxColor = Color3.fromRGB(15, 17, 26)
 local LineNumberColor = Color3.fromRGB(17, 32, 47)
+local PinPinnedColor = Color3.fromRGB(3, 60, 166)
+local PinUnPinnedColor = Color3.fromRGB(88, 88, 88)
 
 --[[ FRAMES ]]--
 
@@ -917,16 +935,16 @@ ExecuterPin.BackgroundTransparency = 1
 ExecuterPin.ZIndex = 14
 
 if Settings["Executer Pinned"] == false then
-	ExecuterPin.ImageColor3 = Color3.fromRGB(88, 88, 88)
+	ExecuterPin.ImageColor3 = PinUnPinnedColor
 	ExecuterPinned = false
 elseif Settings["Executer Pinned"] == true then 
-	ExecuterPin.ImageColor3 = Color3.fromRGB(3, 60, 166)
+	ExecuterPin.ImageColor3 = PinPinnedColor
 	ExecuterPinned = true
 end
 
 ExecuterPin.MouseButton1Down:connect(function() 
 	if ExecuterPinned then
-		ExecuterPin.ImageColor3 = Color3.fromRGB(88, 88, 88)
+		ExecuterPin.ImageColor3 = PinUnPinnedColor
 		Settings["Executer Pinned"] = false
 		writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
 		ExecuterPinned = false
@@ -934,7 +952,7 @@ ExecuterPin.MouseButton1Down:connect(function()
 			Executer.Visible = false
 		end
 	else
-		ExecuterPin.ImageColor3 = Color3.fromRGB(3, 60, 166)
+		ExecuterPin.ImageColor3 = PinPinnedColor
 		Settings["Executer Pinned"] = true
 		writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
 		ExecuterPinned = true
@@ -1001,7 +1019,7 @@ ExecuterBox.BorderColor3 = TextBoxColor
 ExecuterBox.Position = UDim2.new(0.02, 0, 0, 0)
 ExecuterBox.Size = UDim2.new(1, 0, 1, 0)
 ExecuterBox.Font = Enum.Font.Code
-ExecuterBox.Text = Settings["Saved Script"]
+ExecuterBox.Text = SavedScript
 ExecuterBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 ExecuterBox.TextSize = 14
 
@@ -1406,8 +1424,8 @@ highlight_source("Text")
 ExecuterBox.Changed:Connect(highlight_source)
 
 ExecuterBox.Changed:Connect(function()
-	Settings["Saved Script"] = ExecuterBox.Text
-	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+	SavedScript = ExecuterBox.Text
+	writefile("AlphaOS/Tabs/Script1.lua", SavedScript)
 end)
 
 ExecuterLineNumbers.Name = "ExecuterLineNumbers"
@@ -1560,16 +1578,16 @@ ConsolePin.BackgroundTransparency = 1
 ConsolePin.ZIndex = 4
 
 if Settings["Console Pinned"] == false then
-	ConsolePin.ImageColor3 = Color3.fromRGB(88, 88, 88)
+	ConsolePin.ImageColor3 = PinUnPinnedColor
 	ConsolePinned = false
 elseif Settings["Console Pinned"] == true then 
-	ConsolePin.ImageColor3 = Color3.fromRGB(3, 60, 166)
+	ConsolePin.ImageColor3 = PinPinnedColor
 	ConsolePinned = true
 end
 
 ConsolePin.MouseButton1Down:connect(function() 
 	if ConsolePinned then
-		ConsolePin.ImageColor3 = Color3.fromRGB(88, 88, 88)
+		ConsolePin.ImageColor3 = PinUnPinnedColor
 		Settings["Console Pinned"] = false
 		writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
 		ConsolePinned = false
@@ -1577,7 +1595,7 @@ ConsolePin.MouseButton1Down:connect(function()
 			Console.Visible = false
 		end
 	else
-		ConsolePin.ImageColor3 = Color3.fromRGB(3, 60, 166)
+		ConsolePin.ImageColor3 = PinPinnedColor
 		Settings["Console Pinned"] = true
 		writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
 		ConsolePinned = true
@@ -1835,16 +1853,16 @@ FilesPin.BackgroundTransparency = 1
 FilesPin.ZIndex = 3
 
 if Settings["Files Pinned"] == false then
-	FilesPin.ImageColor3 = Color3.fromRGB(88, 88, 88)
+	FilesPin.ImageColor3 = PinUnPinnedColor
 	FilesPinned = false
 elseif Settings["Files Pinned"] == true then 
-	FilesPin.ImageColor3 = Color3.fromRGB(3, 60, 166)
+	FilesPin.ImageColor3 = PinPinnedColor
 	FilesPinned = true
 end
 
 FilesPin.MouseButton1Down:connect(function() 
 	if FilesPinned then
-		FilesPin.ImageColor3 = Color3.fromRGB(88, 88, 88)
+		FilesPin.ImageColor3 = PinUnPinnedColor
 		Settings["Files Pinned"] = false
 		writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
 		FilesPinned = false
@@ -1852,7 +1870,7 @@ FilesPin.MouseButton1Down:connect(function()
 			Files.Visible = false
 		end
 	else
-		FilesPin.ImageColor3 = Color3.fromRGB(3, 60, 166)
+		FilesPin.ImageColor3 = PinPinnedColor
 		Settings["Files Pinned"] = true
 		writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
 		FilesPinned = true
@@ -1894,16 +1912,16 @@ ToolsPin.BackgroundTransparency = 1
 ToolsPin.ZIndex = 9
 
 if Settings["Tools Pinned"] == false then
-	ToolsPin.ImageColor3 = Color3.fromRGB(88, 88, 88)
+	ToolsPin.ImageColor3 = PinUnPinnedColor
 	ToolsPinned = false
 elseif Settings["Tools Pinned"] == true then 
-	ToolsPin.ImageColor3 = Color3.fromRGB(3, 60, 166)
+	ToolsPin.ImageColor3 = PinPinnedColor
 	ToolsPinned = true
 end
 
 ToolsPin.MouseButton1Down:connect(function() 
 	if ToolsPinned then
-		ToolsPin.ImageColor3 = Color3.fromRGB(88, 88, 88)
+		ToolsPin.ImageColor3 = PinUnPinnedColor
 		Settings["Tools Pinned"] = false
 		writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
 		ToolsPinned = false
@@ -1911,7 +1929,7 @@ ToolsPin.MouseButton1Down:connect(function()
 			Tools.Visible = false
 		end
 	else
-		ToolsPin.ImageColor3 = Color3.fromRGB(3, 60, 166)
+		ToolsPin.ImageColor3 = PinPinnedColor
 		Settings["Tools Pinned"] = true
 		writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
 		ToolsPinned = true
@@ -2040,14 +2058,14 @@ ToolsMusicBox.BorderColor3 = LineNumberColor
 ToolsMusicBox.Position = UDim2.new(0.01, 0, 0.55, 0)
 ToolsMusicBox.Size = UDim2.new(0.4, 0, 0.08, 0)
 ToolsMusicBox.Font = Enum.Font.SourceSansLight
-ToolsMusicBox.Text = Settings["Current Song"]
+ToolsMusicBox.Text = ToolSaves["Current Song"]
 ToolsMusicBox.TextColor3 = ForegroundColor
 ToolsMusicBox.TextSize = 25
 ToolsMusicBox.TextXAlignment = "Left"
 
 ToolsMusicBox.Changed:Connect(function()
-	Settings["Current Song"] = ToolsMusicBox.Text
-	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+	ToolSaves["Current Song"] = ToolsMusicBox.Text
+	writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(Tools))
 end)
 
 ToolsTeleBox.Name = "ToolsTeleBox"
@@ -2062,14 +2080,14 @@ ToolsTeleBox.BorderColor3 = LineNumberColor
 ToolsTeleBox.Position = UDim2.new(0.428, 0, 0.55, 0)
 ToolsTeleBox.Size = UDim2.new(0.4, 0, 0.08, 0)
 ToolsTeleBox.Font = Enum.Font.SourceSansLight
-ToolsTeleBox.Text = Settings["Teleport ID"]
+ToolsTeleBox.Text = ToolSaves["Teleport ID"]
 ToolsTeleBox.TextColor3 = ForegroundColor
 ToolsTeleBox.TextSize = 25
 ToolsTeleBox.TextXAlignment = "Left"
 
 ToolsTeleBox.Changed:Connect(function()
-	Settings["Teleport ID"] = ToolsTeleBox.Text
-	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+	ToolSaves["Teleport ID"] = ToolsTeleBox.Text
+	writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(Tools))
 end)
 
 ToolsTeleBtn.Name = "ToolsTeleBtn"
@@ -2101,8 +2119,8 @@ ToolsPlayBtn.TextColor3 = ForegroundColor
 ToolsPlayBtn.TextSize = 25
 
 ToolsPlayBtn.MouseButton1Down:Connect(function() 
-	Settings["Song Playing"] = true
-	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+	ToolSaves["Song Playing"] = true
+	writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(Tools))
 	
 	BackgroundMusic:Resume()
 end)
@@ -2120,8 +2138,8 @@ ToolsStopBtn.TextColor3 = ForegroundColor
 ToolsStopBtn.TextSize = 25
 
 ToolsStopBtn.MouseButton1Down:Connect(function() 
-	Settings["Song Playing"] = false
-	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+	ToolSaves["Song Playing"] = false
+	writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(Tools))
 	
 	BackgroundMusic:Pause()
 end)
@@ -2138,7 +2156,7 @@ ToolsVolumeBox.BorderColor3 = LineNumberColor
 ToolsVolumeBox.Position = UDim2.new(0.01, 0, 0.77, 0)
 ToolsVolumeBox.Size = UDim2.new(0.4, 0, 0.08, 0)
 ToolsVolumeBox.Font = Enum.Font.SourceSansLight
-ToolsVolumeBox.Text = tostring(Settings["Song Volume"])
+ToolsVolumeBox.Text = tostring(ToolSaves["Song Volume"])
 ToolsVolumeBox.TextColor3 = ForegroundColor
 ToolsVolumeBox.TextSize = 25
 ToolsVolumeBox.TextXAlignment = "Left"
@@ -2163,15 +2181,15 @@ ToolsChangeBtn.MouseButton1Down:Connect(function()
 	
 	BackgroundMusic:Stop()
 	
-	BackgroundMusic.Volume = Settings["Song Volume"]
+	BackgroundMusic.Volume = ToolSaves["Song Volume"]
 	BackgroundMusic.TimePosition = 0
 	BackgroundMusic.PlaybackSpeed = 1
 	BackgroundMusic.Pitch = 1
 	BackgroundMusic.SoundId = "rbxassetid://" .. ToolsMusicBox.Text
 	
-	Settings["Current Song"] = ToolsMusicBox.Text
-	Settings["Song Position"] = 0
-	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+	ToolSaves["Current Song"] = ToolsMusicBox.Text
+	ToolSaves["Song Position"] = 0
+	writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(Tools))
 	
 	BackgroundMusic:Play()
 end)
@@ -2190,33 +2208,33 @@ ToolsSetBtn.TextSize = 25
 
 ToolsSetBtn.MouseButton1Down:Connect(function() 
 	MusicVolume = tonumber(ToolsVolumeBox.Text)
-	Settings["Song Volume"] = tonumber(ToolsVolumeBox.Text)
-	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+	ToolSaves["Song Volume"] = tonumber(ToolsVolumeBox.Text)
+	writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(Tools))
 	
 	BackgroundMusic.Volume = tonumber(ToolsVolumeBox.Text)
 end)
 
 if nl then
-	local SoundAsset = game:GetService("MarketplaceService"):GetProductInfo(Settings["Current Song"])
+	local SoundAsset = game:GetService("MarketplaceService"):GetProductInfo(ToolSaves["Current Song"])
 	BackgroundMusicText.Text = "Now Playing : " .. SoundAsset.Name
 
 	BackgroundMusic:Stop()
 
-	BackgroundMusic.Volume = Settings["Song Volume"]
-	BackgroundMusic.TimePosition = Settings["Song Position"]
+	BackgroundMusic.Volume = ToolSaves["Song Volume"]
+	BackgroundMusic.TimePosition = ToolSaves["Song Position"]
 	BackgroundMusic.PlaybackSpeed = 1
 	BackgroundMusic.Pitch = 1
-	BackgroundMusic.SoundId = "rbxassetid://" .. Settings["Current Song"]
+	BackgroundMusic.SoundId = "rbxassetid://" .. ToolSaves["Current Song"]
 
 	coroutine.resume(coroutine.create(function() 
 		while wait(1) do
-			Settings["Song Position"] = BackgroundMusic.TimePosition
+			ToolSaves["Song Position"] = BackgroundMusic.TimePosition
 			
-			writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+			writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(Tools))
 		end
 	end))
 
-	if Settings["Song Playing"] == true then
+	if ToolSaves["Song Playing"] == true then
 		BackgroundMusic:Play()
 	end
 
@@ -2358,27 +2376,27 @@ else
 
 	wait(1)
 
-	local SoundAsset = game:GetService("MarketplaceService"):GetProductInfo(Settings["Current Song"])
+	local SoundAsset = game:GetService("MarketplaceService"):GetProductInfo(ToolSaves["Current Song"])
 
 	BackgroundMusicText.Text = "Now Playing : " .. SoundAsset.Name
 
 	BackgroundMusic:Stop()
 
-	BackgroundMusic.Volume = Settings["Song Volume"]
-	BackgroundMusic.TimePosition = Settings["Song Position"]
+	BackgroundMusic.Volume = ToolSaves["Song Volume"]
+	BackgroundMusic.TimePosition = ToolSaves["Song Position"]
 	BackgroundMusic.PlaybackSpeed = 1
 	BackgroundMusic.Pitch = 1
-	BackgroundMusic.SoundId = "rbxassetid://" .. Settings["Current Song"]
+	BackgroundMusic.SoundId = "rbxassetid://" .. ToolSaves["Current Song"]
 
 	coroutine.resume(coroutine.create(function() 
 		while wait(1) do
-			Settings["Song Position"] = BackgroundMusic.TimePosition
+			ToolSaves["Song Position"] = BackgroundMusic.TimePosition
 			
-			writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+			writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(Tools))
 		end
 	end))
 
-	if Settings["Song Playing"] == true then
+	if ToolSaves["Song Playing"] == true then
 		BackgroundMusic:Play()
 	end
 
@@ -2505,24 +2523,21 @@ Mouse.KeyDown:Connect(function(key)
 		BackgroundOSText.Visible = true
 		
 		if ToggleExecuter then
-			
 			Executer.Visible = true
 		end
-		
 		if ToggleConsole then
-			
 			Console.Visible = true
 		end
-		
 		if ToggleFiles then
-			
 			Files.Visible = true
 		end
-		
 		if ToggleTools then
-			
 			Tools.Visible = true
 		end
+		ExecuterPin.Visible = true
+		ToolsPin.Visible = true
+		ConsolePin.Visible = true
+		FilesPin.Visible = true
 		
 		BackgroundMusic.Volume = MusicVolume
 		
@@ -2555,6 +2570,10 @@ Mouse.KeyDown:Connect(function(key)
 		if not ToolsPinned then
 			Tools.Visible = false
 		end
+		ExecuterPin.Visible = false
+		ToolsPin.Visible = false
+		ConsolePin.Visible = false
+		FilesPin.Visible = false
 		
 		BackgroundMusic.Volume = 1
 		
