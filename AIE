@@ -69,7 +69,7 @@ BnM = loadstring(game:HttpGet("https://raw.githubusercontent.com/saxophonebug/rb
 
 if CustomUI then
     	CustomUIText = [[getgenv().CustomUI = {
-		["Rounded"] = ]] .. CustomUI["Rounded"] .. [[,
+		["Rounded"] = ]] .. tostring(CustomUI["Rounded"]) .. [[,
 		["Colors"] = {
 			["Background Color"] = Color3.new(]] .. tostring(CustomUI["Colors"]["Background Color"]) .. [[),
 			["Foreground Color"] = Color3.new(]] .. tostring(CustomUI["Colors"]["Foreground Color"]) .. [[),
