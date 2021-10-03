@@ -21,6 +21,14 @@ if not isfolder("AlphaOS/Scripts") then
 	makefolder("AlphaOS/Scripts")
 end
 
+if not isfolder("AlphaOS/Assets") then
+	makefolder("AlphaOS/Assets")
+end
+
+if not isfile("AlphaOS/Assets/Pin.png") then
+	writefile("AlphaOS/Assets/Pin.png", game:HttpGet("https://i.ibb.co/Wp9HrZD/Pin-Button.png"))
+end
+
 if not isfile("AlphaOS/Settings.json") then
 	local Settings = {
 		["Saved Script"] = 'print("Hello, World!")',
@@ -29,7 +37,11 @@ if not isfile("AlphaOS/Settings.json") then
 		["Song Volume"] = 3,
 		["Song Playing"] = true,
 		["Teleport ID"] = 5100950559,
-		["RemoteSpy"] = false
+		["RemoteSpy"] = false,
+		["Executer Pinned"] = false,
+		["Tools Pinned"] = false,
+		["Files Pinned"] = false,
+		["Console Pinned"] = false
 	}
 	writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
 end
@@ -51,7 +63,7 @@ local RootPart = Character.HumanoidRootPart
 local Mouse = Player:GetMouse()
 local Humanoid = Character.Humanoid
 
-local ToggleUi = false
+local ToggleUi = true
 local ToggleExecuter = true
 local ToggleConsole = true
 local ToggleFiles = true
@@ -99,15 +111,28 @@ local Executer = Instance.new("Frame")
 local ExecuterBoxBack = Instance.new("Frame")
 local ExecuterScroll = Instance.new("ScrollingFrame")
 
+local ExecuterPinned = false
+local ExecuterPin = Instance.new("ImageButton")
+
 local ScriptsScroll = Instance.new("ScrollingFrame")
 local ScriptsLayout = Instance.new("UIListLayout")
 
 local Console = Instance.new("Frame")
 local ConsoleScroll = Instance.new("ScrollingFrame")
 
+local ConsolePinned = false
+local ConsolePin = Instance.new("ImageButton")
+
 local Files = Instance.new("Frame")
 
+local FilesPinned = false
+local FilesPin = Instance.new("ImageButton")
+
 local Tools = Instance.new("Frame")
+
+local ToolsPinned = false
+local ToolsPin = Instance.new("ImageButton")
+
 local ToolsScroll = Instance.new("ScrollingFrame")
 
 --[[ TEXTLABELS ]]--
@@ -881,23 +906,57 @@ Executer.Position = UDim2.new(0.51, 0, 0.025, 0)
 Executer.Size = UDim2.new(0.4, 0, 0.45, 0)
 Executer.Active = true
 Executer.Draggable = true
+Executer.ZIndex = 11
+
+ExecuterPin.Parent = Executer
+ExecuterPin.Active = true
+ExecuterPin.Position = UDim2.new(0.95, 0, 0.025, 0)
+ExecuterPin.Size = UDim2.new(0, 20, 0, 20)
+ExecuterPin.Image = getcustomasset("AlphaOS/Assets/Pin.png")
+ExecuterPin.BackgroundTransparency = 1
+ExecuterPin.ZIndex = 14
+
+if Settings["Executer Pinned"] == false then
+	ExecuterPin.ImageColor3 = Color3.fromRGB(88, 88, 88)
+	ExecuterPinned = false
+elseif Settings["Executer Pinned"] == true then 
+	ExecuterPin.ImageColor3 = Color3.fromRGB(3, 60, 166)
+	ExecuterPinned = true
+end
+
+ExecuterPin.MouseButton1Down:connect(function() 
+	if ExecuterPinned then
+		ExecuterPin.ImageColor3 = Color3.fromRGB(88, 88, 88)
+		Settings["Executer Pinned"] = false
+		writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+		ExecuterPinned = false
+		if not ToggleUi then
+			Executer.Visible = false
+		end
+	else
+		ExecuterPin.ImageColor3 = Color3.fromRGB(3, 60, 166)
+		Settings["Executer Pinned"] = true
+		writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+		ExecuterPinned = true
+	end
+end)
 
 ExecuterTitle.Name = "ExecuterTitle"
 ExecuterTitle.Parent = Executer
-ExecuterTitle.ZIndex = 3
+ExecuterTitle.ZIndex = 13
 ExecuterTitle.BackgroundColor3 = BackgroundColor
 ExecuterTitle.BorderColor3 = BackgroundColor
 ExecuterTitle.Position = UDim2.new(0, 0, 0, 0)
 ExecuterTitle.Size = UDim2.new(1, 0, 0.07, 0)
 ExecuterTitle.Font = Enum.Font.SourceSans
-ExecuterTitle.Text = " Executor" -- "        Executor" for icon
+ExecuterTitle.Text = " Executor"
 ExecuterTitle.TextColor3 = ForegroundColor
 ExecuterTitle.TextSize = 25
 ExecuterTitle.TextXAlignment = "Left"
 
 ExecuterScroll.Name = "ExecuterScroll"
 ExecuterScroll.Parent = Executer
-ExecuterScroll.ZIndex = 3
+ExecuterScroll.ZIndex = 13
 ExecuterScroll.Active = true
 ExecuterScroll.CanvasSize = UDim2.new(0, 0, 250, 0)
 ExecuterScroll.ScrollBarImageColor3 = ForegroundColor
@@ -909,7 +968,7 @@ ExecuterScroll.Size = UDim2.new(0.8, 0, 0.8, 0)
 
 ScriptsScroll.Name = "ExecuterScroll"
 ScriptsScroll.Parent = Executer
-ScriptsScroll.ZIndex = 3
+ScriptsScroll.ZIndex = 13
 ScriptsScroll.Active = true
 ScriptsScroll.CanvasSize = UDim2.new(0, 0, 5, 0)
 ScriptsScroll.ScrollBarImageColor3 = ForegroundColor
@@ -918,7 +977,6 @@ ScriptsScroll.ScrollBarThickness = 7
 ScriptsScroll.BackgroundColor3 = LineNumberColor
 ScriptsScroll.Position = UDim2.new(0.82, 0, 0.09, 0)
 ScriptsScroll.Size = UDim2.new(0.16, 0, 0.8, 0)
-
 ScriptsLayout.Parent = ScriptsScroll
 
 ExecuterBoxBack.Name = "ExecuterBoxBack"
@@ -933,15 +991,15 @@ ExecuterBoxBack.Draggable = false
 
 ExecuterBox.Name = "ExecuterBox"
 ExecuterBox.Parent = ExecuterScroll
-ExecuterBox.ZIndex = 3
+ExecuterBox.ZIndex = 13
 ExecuterBox.MultiLine = true
 ExecuterBox.ClearTextOnFocus = false
 ExecuterBox.TextXAlignment = "Left"
 ExecuterBox.TextYAlignment = "Top"
 ExecuterBox.BackgroundColor3 = TextBoxColor
 ExecuterBox.BorderColor3 = TextBoxColor
-ExecuterBox.Position = UDim2.new(0.08, 0, 0, 0)
-ExecuterBox.Size = UDim2.new(0.92, 0, 1, 0)
+ExecuterBox.Position = UDim2.new(0.02, 0, 0, 0)
+ExecuterBox.Size = UDim2.new(1, 0, 1, 0)
 ExecuterBox.Font = Enum.Font.Code
 ExecuterBox.Text = Settings["Saved Script"]
 ExecuterBox.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -953,7 +1011,7 @@ Globals_.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Globals_.BackgroundTransparency = 1.000
 Globals_.ClipsDescendants = true
 Globals_.Size = UDim2.new(0, 561, 0, 1744)
-Globals_.ZIndex = 5
+Globals_.ZIndex = 15
 Globals_.Font = Enum.Font.Code
 Globals_.Text = ""
 Globals_.TextColor3 = Color3.fromRGB(132, 214, 247)
@@ -967,7 +1025,7 @@ Keywords_.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Keywords_.BackgroundTransparency = 1.000
 Keywords_.ClipsDescendants = true
 Keywords_.Size = UDim2.new(0, 561, 0, 1744)
-Keywords_.ZIndex = 5
+Keywords_.ZIndex = 15
 Keywords_.Font = Enum.Font.Code
 Keywords_.Text = ""
 Keywords_.TextColor3 = Color3.fromRGB(248, 109, 124)
@@ -981,7 +1039,7 @@ Numbers_.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Numbers_.BackgroundTransparency = 1.000
 Numbers_.ClipsDescendants = true
 Numbers_.Size = UDim2.new(0, 561, 0, 1744)
-Numbers_.ZIndex = 4
+Numbers_.ZIndex = 14
 Numbers_.Font = Enum.Font.Code
 Numbers_.Text = ""
 Numbers_.TextColor3 = Color3.fromRGB(255, 194, 89)
@@ -995,7 +1053,7 @@ RemoteHighlight_.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 RemoteHighlight_.BackgroundTransparency = 1.000
 RemoteHighlight_.ClipsDescendants = true
 RemoteHighlight_.Size = UDim2.new(0, 561, 0, 1744)
-RemoteHighlight_.ZIndex = 5
+RemoteHighlight_.ZIndex = 15
 RemoteHighlight_.Font = Enum.Font.Code
 RemoteHighlight_.Text = ""
 RemoteHighlight_.TextColor3 = Color3.fromRGB(11, 255, 203)
@@ -1009,7 +1067,7 @@ Strings_.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Strings_.BackgroundTransparency = 1.000
 Strings_.ClipsDescendants = true
 Strings_.Size = UDim2.new(0, 561, 0, 1744)
-Strings_.ZIndex = 5
+Strings_.ZIndex = 15
 Strings_.Font = Enum.Font.Code
 Strings_.Text = ""
 Strings_.TextColor3 = Color3.fromRGB(172, 122, 104)
@@ -1023,7 +1081,7 @@ Tokens_.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Tokens_.BackgroundTransparency = 1.000
 Tokens_.ClipsDescendants = true
 Tokens_.Size = UDim2.new(0, 561, 0, 1744)
-Tokens_.ZIndex = 5
+Tokens_.ZIndex = 15
 Tokens_.Font = Enum.Font.Code
 Tokens_.Text = ""
 Tokens_.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -1038,7 +1096,7 @@ Comments_.BackgroundTransparency = 1.000
 Comments_.ClipsDescendants = true
 Comments_.Size = UDim2.new(0, 561, 0, 1744)
 Comments_.Visible = false
-Comments_.ZIndex = 5
+Comments_.ZIndex = 15
 Comments_.Font = Enum.Font.Code
 Comments_.Text = ""
 Comments_.TextColor3 = Color3.fromRGB(86, 86, 86)
@@ -1354,13 +1412,13 @@ end)
 
 ExecuterLineNumbers.Name = "ExecuterLineNumbers"
 ExecuterLineNumbers.Parent = ExecuterScroll
-ExecuterLineNumbers.ZIndex = 3
+ExecuterLineNumbers.ZIndex = 13
 ExecuterLineNumbers.TextXAlignment = "Left"
 ExecuterLineNumbers.TextYAlignment = "Top"
 ExecuterLineNumbers.BackgroundColor3 = LineNumberColor
 ExecuterLineNumbers.BorderColor3 = LineNumberColor
 ExecuterLineNumbers.Position = UDim2.new(0, 0, 0, 0)
-ExecuterLineNumbers.Size = UDim2.new(0.07, 0, 1, 0)
+ExecuterLineNumbers.Size = UDim2.new(0.01, 0, 1, 0)
 ExecuterLineNumbers.Font = Enum.Font.SourceSansLight
 ExecuterLineNumbers.Text = " 1"
 ExecuterLineNumbers.TextColor3 = ForegroundColor
@@ -1396,7 +1454,7 @@ end))
 
 ExecuterBtn.Name = "ExecuterBtn"
 ExecuterBtn.Parent = Executer
-ExecuterBtn.ZIndex = 3
+ExecuterBtn.ZIndex = 13
 ExecuterBtn.BackgroundColor3 = BackgroundColor
 ExecuterBtn.BorderColor3 = BackgroundColor
 ExecuterBtn.Position = UDim2.new(0.007, 0, 0.91, 0)
@@ -1422,7 +1480,7 @@ end)
 
 ExecuterClearBtn.Name = "ExecuterClearBtn"
 ExecuterClearBtn.Parent = Executer
-ExecuterClearBtn.ZIndex = 3
+ExecuterClearBtn.ZIndex = 13
 ExecuterClearBtn.BackgroundColor3 = BackgroundColor
 ExecuterClearBtn.BorderColor3 = BackgroundColor
 ExecuterClearBtn.Position = UDim2.new(0.165, 0, 0.91, 0)
@@ -1439,7 +1497,7 @@ end)
 
 ExecuterOpenFileBtn.Name = "ExecuterOpenFileBtn"
 ExecuterOpenFileBtn.Parent = Executer
-ExecuterOpenFileBtn.ZIndex = 3
+ExecuterOpenFileBtn.ZIndex = 13
 ExecuterOpenFileBtn.BackgroundColor3 = BackgroundColor
 ExecuterOpenFileBtn.BorderColor3 = BackgroundColor
 ExecuterOpenFileBtn.Position = UDim2.new(0.322, 0, 0.91, 0)
@@ -1451,7 +1509,7 @@ ExecuterOpenFileBtn.TextSize = 25
 
 ExecuterSaveFileBtn.Name = "ExecuterSaveFileBtn"
 ExecuterSaveFileBtn.Parent = Executer
-ExecuterSaveFileBtn.ZIndex = 3
+ExecuterSaveFileBtn.ZIndex = 13
 ExecuterSaveFileBtn.BackgroundColor3 = BackgroundColor
 ExecuterSaveFileBtn.BorderColor3 = BackgroundColor
 ExecuterSaveFileBtn.Position = UDim2.new(0.48, 0, 0.91, 0)
@@ -1467,7 +1525,7 @@ end)
 
 ExecuterBeautifyBtn.Name = "ExecuterBeautifyBtn"
 ExecuterBeautifyBtn.Parent = Executer
-ExecuterBeautifyBtn.ZIndex = 3
+ExecuterBeautifyBtn.ZIndex = 13
 ExecuterBeautifyBtn.BackgroundColor3 = BackgroundColor
 ExecuterBeautifyBtn.BorderColor3 = BackgroundColor
 ExecuterBeautifyBtn.Position = UDim2.new(0.638, 0, 0.91, 0)
@@ -1492,6 +1550,39 @@ Console.Position = UDim2.new(0.51, 0, 0.51, 0)
 Console.Size = UDim2.new(0.4, 0, 0.45, 0)
 Console.Active = true
 Console.Draggable = true
+
+ConsolePin.Parent = Console
+ConsolePin.Active = true
+ConsolePin.Position = UDim2.new(0.95, 0, 0.025, 0)
+ConsolePin.Size = UDim2.new(0, 20, 0, 20)
+ConsolePin.Image = getcustomasset("AlphaOS/Assets/Pin.png")
+ConsolePin.BackgroundTransparency = 1
+ConsolePin.ZIndex = 4
+
+if Settings["Console Pinned"] == false then
+	ConsolePin.ImageColor3 = Color3.fromRGB(88, 88, 88)
+	ConsolePinned = false
+elseif Settings["Console Pinned"] == true then 
+	ConsolePin.ImageColor3 = Color3.fromRGB(3, 60, 166)
+	ConsolePinned = true
+end
+
+ConsolePin.MouseButton1Down:connect(function() 
+	if ConsolePinned then
+		ConsolePin.ImageColor3 = Color3.fromRGB(88, 88, 88)
+		Settings["Console Pinned"] = false
+		writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+		ConsolePinned = false
+		if not ToggleUi then
+			Console.Visible = false
+		end
+	else
+		ConsolePin.ImageColor3 = Color3.fromRGB(3, 60, 166)
+		Settings["Console Pinned"] = true
+		writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+		ConsolePinned = true
+	end
+end)
 
 ConsoleTitle.Name = "ConsoleTitle"
 ConsoleTitle.Parent = Console
@@ -1735,9 +1826,42 @@ Files.Size = UDim2.new(0.4, 0, 0.45, 0)
 Files.Active = true
 Files.Draggable = true
 
+FilesPin.Parent = Files
+FilesPin.Active = true
+FilesPin.Position = UDim2.new(0.95, 0, 0.025, 0)
+FilesPin.Size = UDim2.new(0, 20, 0, 20)
+FilesPin.Image = getcustomasset("AlphaOS/Assets/Pin.png")
+FilesPin.BackgroundTransparency = 1
+FilesPin.ZIndex = 3
+
+if Settings["Files Pinned"] == false then
+	FilesPin.ImageColor3 = Color3.fromRGB(88, 88, 88)
+	FilesPinned = false
+elseif Settings["Files Pinned"] == true then 
+	FilesPin.ImageColor3 = Color3.fromRGB(3, 60, 166)
+	FilesPinned = true
+end
+
+FilesPin.MouseButton1Down:connect(function() 
+	if FilesPinned then
+		FilesPin.ImageColor3 = Color3.fromRGB(88, 88, 88)
+		Settings["Files Pinned"] = false
+		writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+		FilesPinned = false
+		if not ToggleUi then
+			Files.Visible = false
+		end
+	else
+		FilesPin.ImageColor3 = Color3.fromRGB(3, 60, 166)
+		Settings["Files Pinned"] = true
+		writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+		FilesPinned = true
+	end
+end)
+
 FilesTitle.Name = "FilesTitle"
 FilesTitle.Parent = Files
-FilesTitle.ZIndex = 3
+FilesTitle.ZIndex = 2
 FilesTitle.BackgroundColor3 = BackgroundColor
 FilesTitle.BorderColor3 = BackgroundColor
 FilesTitle.Position = UDim2.new(0, 0, 0, 0)
@@ -1759,10 +1883,44 @@ Tools.Position = UDim2.new(0.09, 0, 0.51, 0)
 Tools.Size = UDim2.new(0.4, 0, 0.45, 0)
 Tools.Active = true
 Tools.Draggable = true
+Tools.ZIndex = 6
+
+ToolsPin.Parent = Tools
+ToolsPin.Active = true
+ToolsPin.Position = UDim2.new(0.95, 0, 0.025, 0)
+ToolsPin.Size = UDim2.new(0, 20, 0, 20)
+ToolsPin.Image = getcustomasset("AlphaOS/Assets/Pin.png")
+ToolsPin.BackgroundTransparency = 1
+ToolsPin.ZIndex = 9
+
+if Settings["Tools Pinned"] == false then
+	ToolsPin.ImageColor3 = Color3.fromRGB(88, 88, 88)
+	ToolsPinned = false
+elseif Settings["Tools Pinned"] == true then 
+	ToolsPin.ImageColor3 = Color3.fromRGB(3, 60, 166)
+	ToolsPinned = true
+end
+
+ToolsPin.MouseButton1Down:connect(function() 
+	if ToolsPinned then
+		ToolsPin.ImageColor3 = Color3.fromRGB(88, 88, 88)
+		Settings["Tools Pinned"] = false
+		writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+		ToolsPinned = false
+		if not ToggleUi then
+			Tools.Visible = false
+		end
+	else
+		ToolsPin.ImageColor3 = Color3.fromRGB(3, 60, 166)
+		Settings["Tools Pinned"] = true
+		writefile("AlphaOS/Settings.json", game:GetService('HttpService'):JSONEncode(Settings))
+		ToolsPinned = true
+	end
+end)
 
 ToolsTitle.Name = "ToolsTitle"
 ToolsTitle.Parent = Tools
-ToolsTitle.ZIndex = 3
+ToolsTitle.ZIndex = 8
 ToolsTitle.BackgroundColor3 = BackgroundColor
 ToolsTitle.BorderColor3 = BackgroundColor
 ToolsTitle.Position = UDim2.new(0, 0, 0, 0)
@@ -1775,7 +1933,7 @@ ToolsTitle.TextXAlignment = "Left"
 
 ToolsScroll.Name = "ToolsScroll"
 ToolsScroll.Parent = Tools
-ToolsScroll.ZIndex = 3
+ToolsScroll.ZIndex = 8
 ToolsScroll.Active = true
 ToolsScroll.CanvasSize = UDim2.new(0, 0, 250, 0)
 ToolsScroll.ScrollBarImageColor3 = ForegroundColor
@@ -1788,7 +1946,7 @@ ToolsScroll.Size = UDim2.new(0.825, 0, 0.4, 0)
 
 ToolsSyntaxCheck.Name = "ToolsSyntaxCheck"
 ToolsSyntaxCheck.Parent = ToolsScroll
-ToolsSyntaxCheck.ZIndex = 3
+ToolsSyntaxCheck.ZIndex = 8
 ToolsSyntaxCheck.TextXAlignment = "Left"
 ToolsSyntaxCheck.TextYAlignment = "Top"
 ToolsSyntaxCheck.BackgroundColor3 = TextBoxColor
@@ -1816,7 +1974,7 @@ end)
 
 ToolsClearBtn.Name = "ToolsClearBtn"
 ToolsClearBtn.Parent = Tools
-ToolsClearBtn.ZIndex = 3
+ToolsClearBtn.ZIndex = 8
 ToolsClearBtn.BackgroundColor3 = BackgroundColor
 ToolsClearBtn.BorderColor3 = BackgroundColor
 ToolsClearBtn.Position = UDim2.new(0.845, 0, 0.1, 0)
@@ -1832,7 +1990,7 @@ end)
 
 ToolsRejoin.Name = "ToolsRejoin"
 ToolsRejoin.Parent = Tools
-ToolsRejoin.ZIndex = 3
+ToolsRejoin.ZIndex = 8
 ToolsRejoin.BackgroundColor3 = BackgroundColor
 ToolsRejoin.BorderColor3 = BackgroundColor
 ToolsRejoin.Position = UDim2.new(0.845, 0, 0.25, 0)
@@ -1848,7 +2006,7 @@ end)
 
 ToolsToggleRspy.Name = "ToolsToggleRspyBtn"
 ToolsToggleRspy.Parent = Tools
-ToolsToggleRspy.ZIndex = 3
+ToolsToggleRspy.ZIndex = 8
 ToolsToggleRspy.BackgroundColor3 = BackgroundColor
 ToolsToggleRspy.BorderColor3 = BackgroundColor
 ToolsToggleRspy.Position = UDim2.new(0.845, 0, 0.175, 0)
@@ -1872,7 +2030,7 @@ end)
 
 ToolsMusicBox.Name = "ToolsMusicBox"
 ToolsMusicBox.Parent = Tools
-ToolsMusicBox.ZIndex = 3
+ToolsMusicBox.ZIndex = 8
 ToolsMusicBox.MultiLine = false
 ToolsMusicBox.ClearTextOnFocus = false
 ToolsMusicBox.TextXAlignment = "Left"
@@ -1894,7 +2052,7 @@ end)
 
 ToolsTeleBox.Name = "ToolsTeleBox"
 ToolsTeleBox.Parent = Tools
-ToolsTeleBox.ZIndex = 3
+ToolsTeleBox.ZIndex = 8
 ToolsTeleBox.MultiLine = false
 ToolsTeleBox.ClearTextOnFocus = false
 ToolsTeleBox.TextXAlignment = "Left"
@@ -1916,7 +2074,7 @@ end)
 
 ToolsTeleBtn.Name = "ToolsTeleBtn"
 ToolsTeleBtn.Parent = Tools
-ToolsTeleBtn.ZIndex = 3
+ToolsTeleBtn.ZIndex = 8
 ToolsTeleBtn.BackgroundColor3 = BackgroundColor
 ToolsTeleBtn.BorderColor3 = BackgroundColor
 ToolsTeleBtn.Position = UDim2.new(0.428, 0, 0.66, 0)
@@ -1932,7 +2090,7 @@ end)
 
 ToolsPlayBtn.Name = "ToolsPlayBtn"
 ToolsPlayBtn.Parent = Tools
-ToolsPlayBtn.ZIndex = 3
+ToolsPlayBtn.ZIndex = 8
 ToolsPlayBtn.BackgroundColor3 = BackgroundColor
 ToolsPlayBtn.BorderColor3 = BackgroundColor
 ToolsPlayBtn.Position = UDim2.new(0.01, 0, 0.66, 0)
@@ -1951,7 +2109,7 @@ end)
 
 ToolsStopBtn.Name = "ToolsStopBtn"
 ToolsStopBtn.Parent = Tools
-ToolsStopBtn.ZIndex = 3
+ToolsStopBtn.ZIndex = 8
 ToolsStopBtn.BackgroundColor3 = BackgroundColor
 ToolsStopBtn.BorderColor3 = BackgroundColor
 ToolsStopBtn.Position = UDim2.new(0.215, 0, 0.66, 0)
@@ -1970,7 +2128,7 @@ end)
 
 ToolsVolumeBox.Name = "ToolsVolumeBox"
 ToolsVolumeBox.Parent = Tools
-ToolsVolumeBox.ZIndex = 3
+ToolsVolumeBox.ZIndex = 8
 ToolsVolumeBox.MultiLine = false
 ToolsVolumeBox.ClearTextOnFocus = false
 ToolsVolumeBox.TextXAlignment = "Left"
@@ -1987,7 +2145,7 @@ ToolsVolumeBox.TextXAlignment = "Left"
 
 ToolsChangeBtn.Name = "ToolsChangeBtn"
 ToolsChangeBtn.Parent = Tools
-ToolsChangeBtn.ZIndex = 3
+ToolsChangeBtn.ZIndex = 8
 ToolsChangeBtn.BackgroundColor3 = BackgroundColor
 ToolsChangeBtn.BorderColor3 = BackgroundColor
 ToolsChangeBtn.Position = UDim2.new(0.01, 0, 0.89, 0)
@@ -2020,7 +2178,7 @@ end)
 
 ToolsSetBtn.Name = "ToolsSetBtn"
 ToolsSetBtn.Parent = Tools
-ToolsSetBtn.ZIndex = 3
+ToolsSetBtn.ZIndex = 8
 ToolsSetBtn.BackgroundColor3 = BackgroundColor
 ToolsSetBtn.BorderColor3 = BackgroundColor
 ToolsSetBtn.Position = UDim2.new(0.215, 0, 0.89, 0)
@@ -2385,10 +2543,18 @@ Mouse.KeyDown:Connect(function(key)
 		TaskBar.Visible = false
 		BackgroundMusicText.Visible = false
 		BackgroundOSText.Visible = false
-		Executer.Visible = false
-		Console.Visible = false
-		Files.Visible = false
-		Tools.Visible = false
+		if not ExecuterPinned then
+			Executer.Visible = false
+		end
+		if not ConsolePinned then
+			Console.Visible = false
+		end
+		if not FilesPinned then
+			Files.Visible = false
+		end
+		if not ToolsPinned then
+			Tools.Visible = false
+		end
 		
 		BackgroundMusic.Volume = 1
 		
