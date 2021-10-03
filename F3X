@@ -15,6 +15,7 @@ defaultProperties.Parent = workspace
 defaultPart:Destroy()
 local F3X = {}
 function F3X.Object(object)
+    if v then
     local properties = {}
     if object:IsA("BasePart") then
         for _,property in pairs(validPartProperties) do
@@ -76,6 +77,7 @@ function F3X.Object(object)
     function proxy:Destroy() serverEndpoint:InvokeServer("Remove", {object}) end
     function proxy:Remove() serverEndpoint:InvokeServer("Remove", {object}) end
     return proxy, object
+    end
 end
 
 function F3X.Edit(objects, properties)
