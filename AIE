@@ -56,7 +56,7 @@ if not isfile("AlphaOS/Tools.json") then
 		["Song Playing"] = true,
 		["Teleport ID"] = 5100950559
 	}
-	writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(Tools))
+	writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(ToolSaves))
 end
 
 local Settings = game:GetService('HttpService'):JSONDecode(readfile("AlphaOS/Settings.json"))
@@ -2065,7 +2065,7 @@ ToolsMusicBox.TextXAlignment = "Left"
 
 ToolsMusicBox.Changed:Connect(function()
 	ToolSaves["Current Song"] = ToolsMusicBox.Text
-	writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(Tools))
+	writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(ToolSaves))
 end)
 
 ToolsTeleBox.Name = "ToolsTeleBox"
@@ -2087,7 +2087,7 @@ ToolsTeleBox.TextXAlignment = "Left"
 
 ToolsTeleBox.Changed:Connect(function()
 	ToolSaves["Teleport ID"] = ToolsTeleBox.Text
-	writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(Tools))
+	writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(ToolSaves))
 end)
 
 ToolsTeleBtn.Name = "ToolsTeleBtn"
@@ -2120,7 +2120,7 @@ ToolsPlayBtn.TextSize = 25
 
 ToolsPlayBtn.MouseButton1Down:Connect(function() 
 	ToolSaves["Song Playing"] = true
-	writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(Tools))
+	writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(ToolSaves))
 	
 	BackgroundMusic:Resume()
 end)
@@ -2139,7 +2139,7 @@ ToolsStopBtn.TextSize = 25
 
 ToolsStopBtn.MouseButton1Down:Connect(function() 
 	ToolSaves["Song Playing"] = false
-	writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(Tools))
+	writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(ToolSaves))
 	
 	BackgroundMusic:Pause()
 end)
@@ -2189,7 +2189,7 @@ ToolsChangeBtn.MouseButton1Down:Connect(function()
 	
 	ToolSaves["Current Song"] = ToolsMusicBox.Text
 	ToolSaves["Song Position"] = 0
-	writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(Tools))
+	writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(ToolSaves))
 	
 	BackgroundMusic:Play()
 end)
@@ -2209,7 +2209,7 @@ ToolsSetBtn.TextSize = 25
 ToolsSetBtn.MouseButton1Down:Connect(function() 
 	MusicVolume = tonumber(ToolsVolumeBox.Text)
 	ToolSaves["Song Volume"] = tonumber(ToolsVolumeBox.Text)
-	writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(Tools))
+	writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(ToolSaves))
 	
 	BackgroundMusic.Volume = tonumber(ToolsVolumeBox.Text)
 end)
@@ -2230,7 +2230,7 @@ if nl then
 		while wait(1) do
 			ToolSaves["Song Position"] = BackgroundMusic.TimePosition
 			
-			writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(Tools))
+			writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(ToolSaves))
 		end
 	end))
 
@@ -2392,7 +2392,7 @@ else
 		while wait(1) do
 			ToolSaves["Song Position"] = BackgroundMusic.TimePosition
 			
-			writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(Tools))
+			writefile("AlphaOS/Tools.json", game:GetService('HttpService'):JSONEncode(ToolSaves))
 		end
 	end))
 
