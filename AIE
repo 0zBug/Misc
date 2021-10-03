@@ -50,7 +50,7 @@ local Settings = game:GetService('HttpService'):JSONDecode(readfile("AlphaOS/Set
 
 BnM = loadstring(game:HttpGet("https://raw.githubusercontent.com/saxophonebug/rblxtst/main/BnM"))()
 
-queue_on_teleport('getgenv().nl = true loadstring(game:HttpGet("https://raw.githubusercontent.com/saxophonebug/rblxuilib/main/AIE"))()')
+queue_on_teleport('getgenv().nl = true loadstring(game:HttpGet("https://raw.githubusercontent.com/saxophonebug/rblxtst/main/AIE"))()')
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
