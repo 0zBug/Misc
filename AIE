@@ -352,7 +352,7 @@ local ScriptNumber = 0
 local function addscript(name)
 	ScriptNumber = ScriptNumber + 1
 	local Script = Instance.new("TextButton")
-	Script.ZIndex = 4
+	Script.ZIndex = 14
 	Script.Name = "Script"..ScriptNumber
 	Script.Text = string.split(name, "\\")[3]
 	Script.Parent = ScriptsScroll
