@@ -113,15 +113,44 @@ BlurFX.Parent = game.Lighting
 game:GetService('StarterGui'):SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
 game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, false)
 
-local BackgroundColor = CustomUI.Colors.BackgroundColor or Color3.fromRGB(9, 11, 16)
-local ForegroundColor = CustomUI.Colors.ForegroundColor or Color3.fromRGB(143, 147, 162)
-local BackgroundTintColor = CustomUI.Colors.BackgroundTintColor or Color3.fromRGB(20, 20, 20)
-local TextBoxColor = CustomUI.Colors.TextBoxColor or Color3.fromRGB(15, 17, 26)
-local LineNumberColor = CustomUI.Colors.LineNumberColor or Color3.fromRGB(17, 32, 47)
-local PinPinnedColor = CustomUI.Colors.PinnedColor or Color3.fromRGB(3, 60, 166)
-local PinUnPinnedColor = CustomUI.Colors.UnpinnedColor or Color3.fromRGB(88, 88, 88) 
+local BackgroundColor = Color3.fromRGB(9, 11, 16)
+local ForegroundColor = Color3.fromRGB(143, 147, 162)
+local BackgroundTintColor = Color3.fromRGB(20, 20, 20)
+local TextBoxColor = Color3.fromRGB(15, 17, 26)
+local LineNumberColor = Color3.fromRGB(17, 32, 47)
+local PinPinnedColor = Color3.fromRGB(3, 60, 166)
+local PinUnPinnedColor = Color3.fromRGB(88, 88, 88) 
 
-local RoundedCorners = CustomUI["Rounded"] or false
+local RoundedCorners = false
+
+if CustomUI then
+	if CustomUI.Colors then
+		if CustomUI.Colors.BackgroundColor then
+			BackgroundColor = CustomUI.Colors.BackgroundColor
+		end
+		if CustomUI.Colors.ForegroundColor then
+			ForegroundColor = CustomUI.Colors.ForegroundColor
+		end
+		if CustomUI.Colors.BackgroundTintColor then
+			BackgroundTintColor = CustomUI.Colors.BackgroundTintColor
+		end
+		if CustomUI.Colors.TextBoxColor then
+			TextBoxColor = CustomUI.Colors.TextBoxColor
+		end
+		if CustomUI.Colors.LineNumberColor then
+			LineNumberColor = CustomUI.Colors.LineNumberColor
+		end
+		if CustomUI.Colors.PinPinnedColor then
+			PinPinnedColor = CustomUI.Colors.PinnedColor
+		end
+		if CustomUI.Colors.UnpinnedColor then
+			PinUnPinnedColor = CustomUI.Colors.UnpinnedColor
+		end
+	end
+	if CustomUI.Rounded then
+		RoundedCorners = CustomUI["Rounded"]
+	end
+end
 
 --[[ FRAMES ]]--
 
