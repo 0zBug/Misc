@@ -4,7 +4,11 @@ local StudioService = {}
 --[[
 Documentation:
 
-function StudioService:CreatePart({
+Put the Service into your script via:
+
+local StudioService = loadstring(game:HttpGet("https://raw.githubusercontent.com/saxophonebug/rblxtst/main/StudioService"))()
+
+StudioService:CreatePart({
 	Name = "Part", 
 	Color = Color3.fromRGB(255, 255, 255),
 	Size = Vector3.new(1, 1, 1), 
@@ -15,24 +19,24 @@ function StudioService:CreatePart({
 	Transparency = 0.5)
 }) -- Creates a Part.
 
-function StudioService:CreateLocalScript({
+StudioService:CreateLocalScript({
 	Name = "LocalScript",
 	Source = "print('Hello, World!')"
 }) -- Creates a LocalScript.
 
-function StudioService:CreateScript({
+StudioService:CreateScript({
 	Name = "Script",
 	Source = "print('Hello, World!')"
 }) -- Creates a Script.
 
-function StudioService:CreateModuleScript({
+StudioService:CreateModuleScript({
 	Name = "ModuleScript",
 	Source = "module = {} return module"
 }) -- Creates a ModuleScript.
 
-function StudioService:CreateRemoteEvent("Name") -- Creates a RemoteEvent.
+StudioService:CreateRemoteEvent("Name") -- Creates a RemoteEvent.
 	
-function StudioService:Finish("Name") -- Ends the file and writes it to Workspace.	
+StudioService:Finish("Name") -- Ends the file and writes it to Workspace.	
 ]]--
 	
 local Start = '<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4"><Item class="Workspace" referent="RBX6BA637DD8B9C44D385DF70A48988C0D5">'
