@@ -1,51 +1,90 @@
+
 local StudioService = {}
 
-local start = '<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4"><Item class="Workspace" referent="RBX6BA637DD8B9C44D385DF70A48988C0D5">'
-local ending = "</Item></roblox>"
+--[[
+Documentation:
 
-function StudioService:CreatePart(name,color,size,position,orientation,anchored,cancollide,transparency)
-   start = start .. '<Item class="Part" referent="RBX620AF4060A8D4746BB58908C5E089749"><Properties>\n'
-   start = start ..'<string name="Name">' .. tostring(name) .. '</string>\n'
-   start = start..'<bool name="Anchored">'..tostring(anchored)..'</bool>\n'
-   start = start..'<CoordinateFrame name="CFrame"><X>'..tostring(position.X)..'</X><Y>'..tostring(position.Y)..'</Y><Z>'..tostring(position.Z)..'</Z></CoordinateFrame>\n'
-   start = start..'<Vector3 name="size"><X>' ..tostring(size.X) .. '</X><Y>' .. tostring(size.Y) ..'</Y><Z>' .. tostring(size.Z) ..'</Z></Vector3>\n'
-   start = start..'<Vector3 name="Orientation"><X>' ..tostring(orientation.X) .. '</X><Y>' ..tostring(orientation.Y) .. '</Y><Z>' ..tostring(orientation.Z) .. '</Z></Vector3>\n'
-   start = start..'<Color3 name="Color"><R>' .. tostring(color.R) ..'</R><G>' .. tostring(color.G) .. '</G><B>' ..tostring(color.B) .. '</B></Color3>\n'
-   start = start..'<bool name="CanCollide">' ..tostring(cancollide) ..'</bool>\n'
-   start = start..'<float name="Transparency">' .. tostring(transparency) ..'</float>\n'
-   start = start..'</Properties></Item>\n'
+function StudioService:CreatePart({
+	Name = "Part", 
+	Color = Color3.fromRGB(255, 255, 255),
+	Size = Vector3.new(1, 1, 1), 
+	Position = Vector3.new(0, 10, 0),
+	Orientation = Vector3.new(0, 45, 0), 
+	Anchored = true, 
+	CanCollide = true,
+	Transparency = 0.5)
+}) -- Creates a Part.
+
+function StudioService:CreateLocalScript({
+	Name = "LocalScript",
+	Source = "print('Hello, World!')"
+}) -- Creates a LocalScript.
+
+function StudioService:CreateScript({
+	Name = "Script",
+	Source = "print('Hello, World!')"
+}) -- Creates a Script.
+
+function StudioService:CreateModuleScript({
+	Name = "ModuleScript",
+	Source = "module = {} return module"
+}) -- Creates a ModuleScript.
+
+function StudioService:CreateRemoteEvent("Name") -- Creates a RemoteEvent.
+	
+function StudioService:Finish("Name") -- Ends the file and writes it to Workspace.	
+]]--
+	
+local Start = '<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4"><Item class="Workspace" referent="RBX6BA637DD8B9C44D385DF70A48988C0D5">'
+local Ending = "</Item></roblox>"
+
+function StudioService:CreatePart(Properties)
+    local Name,Color,Size,Position,Orientation,Anchored,CanCollide,Transparency = Properties.Name,Properties.Color,Properties.Size,Properties.Position,Properties.Orientation,Properties.Anchored,Properties.CanCollide,Properties.Transparency
+    Start = Start .. '<Item class="Part" referent="RBX620AF4060A8D4746BB58908C5E089749"><Properties>\n'
+    Start = Start ..'<string name="Name">' .. tostring(Name) .. '</string>\n'
+    Start = Start..'<bool name="Anchored">'..tostring(Anchored)..'</bool>\n'
+    Start = Start..'<CoordinateFrame name="CFrame"><X>'..tostring(Position.X)..'</X><Y>'..tostring(Position.Y)..'</Y><Z>'..tostring(Position.Z)..'</Z></CoordinateFrame>\n'
+    Start = Start..'<Vector3 name="size"><X>' ..tostring(Size.X) .. '</X><Y>' .. tostring(Size.Y) ..'</Y><Z>' .. tostring(Size.Z) ..'</Z></Vector3>\n'
+    Start = Start..'<Vector3 name="Orientation"><X>' ..tostring(Orientation.X) .. '</X><Y>' ..tostring(Orientation.Y) .. '</Y><Z>' ..tostring(Orientation.Z) .. '</Z></Vector3>\n'
+    Start = Start..'<Color3 name="Color"><R>' .. tostring(Color.R) ..'</R><G>' .. tostring(Color.G) .. '</G><B>' ..tostring(Color.B) .. '</B></Color3>\n'
+    Start = Start..'<bool name="CanCollide">' ..tostring(CanCollide) ..'</bool>\n'
+    Start = Start..'<float name="Transparency">' .. tostring(Transparency) ..'</float>\n'
+    Start = Start..'</Properties></Item>\n'
 end
 
-function StudioService:CreateLocalScript(name,code)
-   start = start .. '<Item class="LocalScript" referent="RBX620AF4060A8D4746BB58908C5E089749"><Properties>\n'
-   start = start..'<string name="Name">' .. tostring(name) .. '</string>\n'
-   start = start..'<ProtectedString name="Source"><![CDATA['..code..']]></ProtectedString>'
-   start = start..'</Properties></Item>\n'
+function StudioService:CreateLocalScript(Properties)
+    local Name,Source = Properties.Name,Properties.Source
+    Start = Start .. '<Item class="LocalScript" referent="RBX620AF4060A8D4746BB58908C5E089749"><Properties>\n'
+    Start = Start..'<string name="Name">' .. tostring(Name) .. '</string>\n'
+    Start = Start..'<ProtectedString name="Source"><![CDATA['..Source..']]></ProtectedString>'
+    Start = Start..'</Properties></Item>\n'
 end
 
-function StudioService:CreateScript(name,code)
-   start = start .. '<Item class="Script" referent="RBX620AF4060A8D4746BB58908C5E089749"><Properties>\n'
-   start = start..'<string name="Name">' .. tostring(name) .. '</string>\n'
-   start = start..'<ProtectedString name="Source"><![CDATA['..code..']]></ProtectedString>'
-   start = start..'</Properties></Item>\n'
+function StudioService:CreateScript(Properties)
+    local Name,Source = Properties.Name,Properties.Source
+    Start = Start .. '<Item class="Script" referent="RBX620AF4060A8D4746BB58908C5E089749"><Properties>\n'
+    Start = Start..'<string name="Name">' .. tostring(Name) .. '</string>\n'
+    Start = Start..'<ProtectedString name="Source"><![CDATA['..Source..']]></ProtectedString>'
+    Start = Start..'</Properties></Item>\n'
 end
 
-function StudioService:CreateModuleScript(name,code)
-   start = start .. '<Item class="ModuleScript" referent="RBX620AF4060A8D4746BB58908C5E089749"><Properties>\n'
-   start = start..'<string name="Name">' .. tostring(name) .. '</string>\n'
-   start = start..'<ProtectedString name="Source"><![CDATA['..code..']]></ProtectedString>'
-   start = start..'</Properties></Item>\n'
+function StudioService:CreateModuleScript(Properties)
+    local Name,Source = Properties.Name,Properties.Source
+    Start = Start .. '<Item class="ModuleScript" referent="RBX620AF4060A8D4746BB58908C5E089749"><Properties>\n'
+    Start = Start..'<string name="Name">' .. tostring(Name) .. '</string>\n'
+    Start = Start..'<ProtectedString name="Source"><![CDATA['..Source..']]></ProtectedString>'
+    Start = Start..'</Properties></Item>\n'
 end
 
-function StudioService:CreateRemoteEvent(name)
-   start = start .. '<Item class="RemoteEvent" referent="RBX620AF4060A8D4746BB58908C5E089749"><Properties>\n'
-   start = start..'<string name="Name">' .. tostring(name) .. '</string>\n'
-   start = start..'</Properties></Item>'
+function StudioService:CreateRemoteEvent(Name)
+    Start = Start .. '<Item class="RemoteEvent" referent="RBX620AF4060A8D4746BB58908C5E089749"><Properties>\n'
+    Start = Start..'<string name="Name">' .. tostring(Name) .. '</string>\n'
+    Start = Start..'</Properties></Item>'
 end
 
-function StudioService:Finish(name)
-   start = start..ending
-   writefile(name..".rbxlx",start);
+function StudioService:Finish(Name)
+    Start = Start..Ending
+    writefile(Name..".rbxlx",Start);
 end
 
 return StudioService
