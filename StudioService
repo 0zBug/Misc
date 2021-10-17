@@ -4,10 +4,11 @@ local StudioService = {}
 --[[
 Documentation:
 
+-- Using the Service --
 Put the Service into your script via:
-
 local StudioService = loadstring(game:HttpGet("https://raw.githubusercontent.com/saxophonebug/rblxtst/main/StudioService"))()
 
+-- Functions --
 StudioService:CreatePart({
 	Name = "Part", 
 	Color = Color3.fromRGB(255, 255, 255),
