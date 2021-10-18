@@ -51,7 +51,11 @@ function StudioService:New(Parent)
 end
 
 function StudioService:Extend(Parent)
-	Start = Start .. '</Item><Item class="' .. Parent .. '" referent="RBX6BA637DD8B9C44D385DF70A48988C0D5">'
+	Start = Start .. '</Item>\n<Item class="' .. Parent .. '" referent="RBX6BA637DD8B9C44D385DF70A48988C0D5">'
+end
+
+function StudioService:Wrap(Amount)
+	Start = Start .. ("</Item>\n"):rep(Amount)
 end
 
 function StudioService:CreatePart(Properties)
@@ -65,7 +69,7 @@ function StudioService:CreatePart(Properties)
     Start = Start..'<Color3 name="Color"><R>' .. tostring(Color.R) ..'</R><G>' .. tostring(Color.G) .. '</G><B>' ..tostring(Color.B) .. '</B></Color3>\n'
     Start = Start..'<bool name="CanCollide">' ..tostring(CanCollide) ..'</bool>\n'
     Start = Start..'<float name="Transparency">' .. tostring(Transparency) ..'</float>\n'
-    Start = Start..'</Properties></Item>\n'
+    Start = Start..'</Properties>\n'
 end
 
 function StudioService:CreateLocalScript(Properties)
@@ -73,7 +77,7 @@ function StudioService:CreateLocalScript(Properties)
     Start = Start .. '<Item class="LocalScript" referent="RBX620AF4060A8D4746BB58908C5E089749"><Properties>\n'
     Start = Start..'<string name="Name">' .. tostring(Name) .. '</string>\n'
     Start = Start..'<ProtectedString name="Source"><![CDATA['..Source..']]></ProtectedString>'
-    Start = Start..'</Properties></Item>\n'
+    Start = Start..'</Properties>\n'
 end
 
 function StudioService:CreateScript(Properties)
@@ -81,7 +85,7 @@ function StudioService:CreateScript(Properties)
     Start = Start .. '<Item class="Script" referent="RBX620AF4060A8D4746BB58908C5E089749"><Properties>\n'
     Start = Start..'<string name="Name">' .. tostring(Name) .. '</string>\n'
     Start = Start..'<ProtectedString name="Source"><![CDATA['..Source..']]></ProtectedString>'
-    Start = Start..'</Properties></Item>\n'
+    Start = Start..'</Properties>\n'
 end
 
 function StudioService:CreateModuleScript(Properties)
@@ -89,13 +93,13 @@ function StudioService:CreateModuleScript(Properties)
     Start = Start .. '<Item class="ModuleScript" referent="RBX620AF4060A8D4746BB58908C5E089749"><Properties>\n'
     Start = Start..'<string name="Name">' .. tostring(Name) .. '</string>\n'
     Start = Start..'<ProtectedString name="Source"><![CDATA['..Source..']]></ProtectedString>'
-    Start = Start..'</Properties></Item>\n'
+    Start = Start..'</Properties>\n'
 end
 
 function StudioService:CreateRemoteEvent(Name)
     Start = Start .. '<Item class="RemoteEvent" referent="RBX620AF4060A8D4746BB58908C5E089749"><Properties>\n'
     Start = Start..'<string name="Name">' .. tostring(Name) .. '</string>\n'
-    Start = Start..'</Properties></Item>'
+    Start = Start..'</Properties>\n'
 end
 
 function StudioService:Finish(Name)
