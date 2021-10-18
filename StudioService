@@ -1,4 +1,3 @@
-
 local StudioService = {}
 
 --[[
@@ -9,6 +8,10 @@ Put the Service into your script via:
 local StudioService = loadstring(game:HttpGet("https://raw.githubusercontent.com/saxophonebug/rblxtst/main/StudioService"))()
 
 -- Functions --
+StudioService:New("Workspace") -- Starts the file with an item
+
+StudioService:Extend("Lighting") -- Creates a new item with a different Parent
+
 StudioService:CreatePart({
 	Name = "Part", 
 	Color = Color3.fromRGB(255, 255, 255),
@@ -39,9 +42,17 @@ StudioService:CreateRemoteEvent("Name") -- Creates a RemoteEvent.
 	
 StudioService:Finish("Name") -- Ends the file and writes it to Workspace.	
 ]]--
-	
-local Start = '<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4"><Item class="Workspace" referent="RBX6BA637DD8B9C44D385DF70A48988C0D5">'
+
+local Start = '<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">'
 local Ending = "</Item></roblox>"
+
+function StudioService:New(Parent)
+	Start = Start .. '<Item class="' .. Parent .. '" referent="RBX6BA637DD8B9C44D385DF70A48988C0D5">'
+end
+
+function StudioService:Extend(Parent)
+	Start = Start .. '</Item><Item class="' .. Parent .. '" referent="RBX6BA637DD8B9C44D385DF70A48988C0D5">'
+end
 
 function StudioService:CreatePart(Properties)
     local Name,Color,Size,Position,Orientation,Anchored,CanCollide,Transparency = Properties.Name,Properties.Color,Properties.Size,Properties.Position,Properties.Orientation,Properties.Anchored,Properties.CanCollide,Properties.Transparency
