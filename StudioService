@@ -12,6 +12,8 @@ StudioService:New("Workspace") -- Starts the file with an item
 
 StudioService:Extend("Lighting") -- Creates a new item with a different Parent
 
+StudioService:Wrap(1) -- Encloses an Item the amount specified.
+
 StudioService:CreatePart({
 	Name = "Part", 
 	Color = Color3.fromRGB(255, 255, 255),
