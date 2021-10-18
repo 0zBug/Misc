@@ -1,0 +1,121 @@
+type table = {any}
+type dict = {[string|boolean]: any}
+
+local specialTags, doNotNeedClosingTag = {}, {}
+
+local find
+find = function(originalTable, findValue)
+	for index, wrappedTable in pairs(originalTable) do
+		if wrappedTable == findValue then
+			return wrappedTable
+		else
+			return nil
+		end
+	end
+end
+
+local findIndexInDictionary
+findIndexInDictionary = function(originalTable, findIndex)
+	for index, wrappedTable in pairs(originalTable) do
+		if index == "_parent" or index == "ATTRIBUTES" or index == "innerText" then
+			continue
+		elseif index == findIndex then
+			return wrappedTable
+		elseif type(wrappedTable) == "table" then
+			local returnVal = findIndexInDictionary(wrappedTable, findIndex)
+			if not returnVal then continue else return returnVal end
+		else
+			return nil
+		end
+	end
+end
+
+return function(xml: string)
+	xml = xml:gsub("\n", "")
+	xml = xml:gsub("\t", "")
+	
+	local tree: any = {}
+	local tokens = xml:split("")
+	local currentIndex: number = 1
+	local currentToken: string|nil = tokens[currentIndex]
+	local currentText: string, currentTag: string = "", ""
+	local currentTag: any = tree
+	local indexedTable = {}
+	
+	local function assignParent(tbl, parent)
+		if type(tbl) == "table" and parent then
+			rawset(tbl, "_parent", parent)
+		end
+	end
+	
+	local function findAvailableNumber(tagName)
+		local recursive
+		recursive = function(num)
+			if findIndexInDictionary(tree, tagName..tostring(num)) then
+				return recursive(num + 1)
+			else
+				return num
+			end
+		end
+		
+		return recursive(1)
+	end
+	
+	local function advance()
+		currentIndex += 1
+		currentToken = tokens[currentIndex]
+	end
+	
+	local function getRawTextUntil(endToken: string|nil)
+		local text = ''
+		repeat
+			advance()
+			text ..= type(currentToken) == 'string' and tostring(currentToken) or '' -- shorthand concatenation + ternary operation
+		until currentToken == endToken
+		text = text:gsub(">", ""):lower()
+		return text
+	end
+	
+	local function separateAttributesFromRawTag(rawTag: string)
+		local split: table = rawTag:split(" ")
+		local tag: string = tostring(table.remove(split, 1))
+		local propsOld: table = split
+		local propsNew: table = {}
+		for i, v in ipairs(propsOld) do
+			local splitAgain = v:split("=")
+			propsNew[splitAgain[1]] = splitAgain[2] and splitAgain[2]:gsub("\"", "") or ''
+		end
+		return tag, propsNew
+	end
+	
+	while type(currentToken) == 'string' do
+		if currentToken == "<" then
+			local tagName = getRawTextUntil('>')
+			if tagName:sub(1, 1) ~= "/" then
+				local tag, props = separateAttributesFromRawTag(tagName)
+				if table.find(specialTags, tag) then
+					table.insert(indexedTable, tag)
+					currentTag[tag] = { ATTRIBUTES = props, innerText = "" }
+					assignParent(currentTag[tag], currentTag)
+					currentTag = currentTag[tag]
+				else
+					local name = tag..findAvailableNumber(tag)
+					table.insert(indexedTable, name)
+					currentTag[tostring(name)] = { ATTRIBUTES = props, innerText = "" }
+					assignParent(currentTag[tostring(name)], currentTag)
+					currentTag = currentTag[tostring(name)]
+				end
+				if table.find(doNotNeedClosingTag, tag) then
+					currentTag = currentTag._parent
+				end
+			else
+				currentTag = currentTag._parent
+			end
+		else
+			currentTag.innerText ..= currentToken
+		end
+		advance()
+	end
+	
+	return {dictionary = tree, indexedTable = indexedTable}
+end
