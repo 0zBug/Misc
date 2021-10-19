@@ -3175,6 +3175,12 @@ end
 function BnM.Beautify(sc, renameVars, renameGlobals)
 	local ast = CreateLuaParser(sc)
 	local glb, root = AddVariableInfo(ast)
+	MinifyVariables_2(glb, root, renameGlobals)
+	StripAst(ast)
+	local sc = PrintAst(ast)
+
+	local ast = CreateLuaParser(sc)
+	local glb, root = AddVariableInfo(ast)
 	if renameVars then
 		BeautifyVariables(glb, root, renameGlobals)
 	end
