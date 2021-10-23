@@ -3179,14 +3179,14 @@ function BnM.Minify(sc, renameGlobals)
 end
 
 function BnM.Beautify(sc, renameVars, renameGlobals)
-	local sc = RemoveComments(sc)
 	local ast = CreateLuaParser(sc)
 	local glb, root = AddVariableInfo(ast)
 	if renameVars then
 		BeautifyVariables(glb, root, renameGlobals)
 	end
 	FormatAst(ast)
-	local result = PrintAst(ast)
+	local rt = PrintAst(ast)
+	local result = RemoveComments(rt)
 
 	return result
 end
