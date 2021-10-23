@@ -3160,12 +3160,6 @@ local function BeautifyVariables(globalScope, rootScope, renameGlobals)
 	modify(rootScope)
 end
 
-local function RemoveComments(s)
-	return (s:gsub("--(-.-)\n", function()
-		return "\n"
-	end))
-end
-
 BnM = {}
 
 function BnM.Minify(sc, renameGlobals)
@@ -3185,8 +3179,7 @@ function BnM.Beautify(sc, renameVars, renameGlobals)
 		BeautifyVariables(glb, root, renameGlobals)
 	end
 	FormatAst(ast)
-	local rt = PrintAst(ast)
-	local result = RemoveComments(rt)
+	local result = PrintAst(ast)
 
 	return result
 end
