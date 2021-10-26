@@ -1,6 +1,6 @@
 local Lightning = {}
 
-local Lightning.LightningBolt = function()
+Lightning.LightningBolt = function()
 	local clock = os.clock
 
 	function DiscretePulse(input, s, k, f, t, min, max)
@@ -191,7 +191,7 @@ local Lightning.LightningBolt = function()
 	return LightningBolt
 end
 
-local Lightning.LightningSparks = function()
+Lightning.LightningSparks = function()
 	local ActiveSparks = {}
 
 	local rng = Random.new()
