@@ -193,6 +193,8 @@ end
 
 Lightning.LightningSparks = function()
 	local ActiveSparks = {}
+	
+	local LightningBolt = Lightning.LightningBolt()
 
 	local rng = Random.new()
 	local LightningSparks = {}
