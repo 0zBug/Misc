@@ -837,4 +837,4 @@ function Module:AddNewLanguage(Name)
 	return self[Name]
 end
 
-return
+return Module
