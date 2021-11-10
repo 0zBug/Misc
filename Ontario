@@ -1,0 +1,52 @@
+
+-- Ontario v1.0.0
+
+local Module = loadstring(game:HttpGet("https://raw.githubusercontent.com/saxophonebug/rblxtst/main/Language"))()
+local Language = Module:AddNewLanguage("Ontario")
+local Math = Language:AddNewLibrary("math")
+
+Language:ChangeHolders("{", "}")
+Language:ChangeTable("<", ">")
+Language:ChangeSeparator(";")
+Language:ChangeConnecter(".")
+Language:ChangeVariable("var")
+
+Language:AddNewFunction("print", print)
+
+Language:AddNewFunction("CheckType", typeof)
+Language:AddNewFunction("Sleep", task.wait)
+
+Math:AddNewFunction("abs", math.abs)
+Math:AddNewFunction("acos", math.acos)
+Math:AddNewFunction("asin", math.asin)
+Math:AddNewFunction("atan", math.atan)
+Math:AddNewFunction("atan2", math.atan2)
+Math:AddNewFunction("ceil", math.ceil)
+Math:AddNewFunction("clamp", math.clamp)
+Math:AddNewFunction("cos", math.cos)
+Math:AddNewFunction("cosh", math.cosh)
+Math:AddNewFunction("deg", math.deg)
+Math:AddNewFunction("exp", math.frexp)
+Math:AddNewFunction("floor", math.floor)
+Math:AddNewFunction("fmod", math.fmod)
+Math:AddNewFunction("frexp", math.frexp)
+Math:AddNewFunction("ldexp", math.ldexp)
+Math:AddNewFunction("log", math.log)
+Math:AddNewFunction("log10", math.log10)
+Math:AddNewFunction("max", math.max)
+Math:AddNewFunction("min", math.min)
+Math:AddNewFunction("modf", math.modf)
+Math:AddNewFunction("noise", math.noise)
+Math:AddNewFunction("pow", math.pow)
+Math:AddNewFunction("rad", math.rad)
+Math:AddNewFunction("random", math.random)
+Math:AddNewFunction("randomseed", math.randomseed)
+Math:AddNewFunction("round", math.round)
+Math:AddNewFunction("sign", math.sign)
+Math:AddNewFunction("sin", math.sin)
+Math:AddNewFunction("sinh", math.sinh)
+Math:AddNewFunction("sqrt", math.sqrt)
+Math:AddNewFunction("tan", math.tan)
+Math:AddNewFunction("tanh", math.tanh)
+
+return Language
