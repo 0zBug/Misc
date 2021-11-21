@@ -335,7 +335,7 @@ local Obj = function()
 
 	return module
 end
-
+Obj = Obj()
 local Cube = function()
 
 	local wedge = Instance.new("WedgePart")
@@ -424,8 +424,8 @@ local Cube = function()
 
 	return module
 end
-
-local Map = function()
+Cube = Cube()
+local Map  = function()
 
 	local RS = game:GetService("RunService")
 
