@@ -1,6 +1,12 @@
 local module = {}
 
-local RunService = game:GetService "RunService"
+local UIBlurEffect = Instance.new("DepthOfFieldEffect", game.Lighting)
+UIBlurEffect.FarIntensity = 0
+UIBlurEffect.FocusDistance = 7.65
+UIBlurEffect.InFocusRadius = 6.45
+UIBlurEffect.NearIntensity = 1
+
+local RunService = game:GetService("RunService")
 local camera = workspace.CurrentCamera
 
 do
