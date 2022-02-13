@@ -1,3 +1,4 @@
+
 return {
 	["🤣"] = Color3.fromRGB(242, 191, 69),
 	["🤠"] = Color3.fromRGB(192, 139, 55),
