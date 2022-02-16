@@ -14,6 +14,7 @@ function Object:Extend()
                   cls[k] = v
             end
       end
+      
       cls.__index = cls
       cls.super = self
       setmetatable(cls, self)
