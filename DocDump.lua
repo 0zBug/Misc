@@ -1,3 +1,4 @@
+
 return {
 	time = [==[The amount of time the tween takes in seconds.]==],
 	guibase = [==[GuiBase is an abstract class which most graphical user interface objects inherit from.]==],
@@ -409,7 +410,6 @@ Can be used in combination with <a href="/api-reference/function/InsertService/L
 	guibutton = [==[An abstract class for interactive 2D user interface elements]==],
 	tilesize = [==[Sets the tiling size of the ImageLabel.]==],
 	setoutgoingkbpslimit = [==[Sets the maximum outgoing bandwidth that Roblox can use.]==],
-	end = [==[When an <code>InputObject</code> finishes interacting with the game. For example, a mouse button up, or a key up, or when a touch stops touching the screen.]==],
 	attachment0 = [==[The <code>Attachment</code> the <code>Beam</code> originates from.]==],
 	mousebutton1click = [==[Fired when the mouse has fully left clicked the GUI button]==],
 	target = [==[The object in 3D space the <code>Mouse</code> is pointing to]==],
@@ -2083,7 +2083,6 @@ This object cannot be created, but it can be retrieved from the <code>ScriptDebu
 	elasticityweight = [==[The importance of the part's elasticity when calculating the elasticity with the colliding part.]==],
 	wait = [==[Yields the current thread until the signal is fired and returns the parameters provided by the signal.]==],
 	systemlocaleid = [==[The locale id that the local player has set for their operating system.]==],
-	in = [==[The easing style is applied in a forward direction. (See animation)]==],
 	connect = [==[Connects the given function to the event and returns an RBXScriptConnection that represents it.]==],
 	wait = [==[Yields the current thread until the signal is fired and returns the parameters provided by the signal.]==],
 	rightmouseclick = [==[Fires when a player right clicks on the ClickDetector]==],
