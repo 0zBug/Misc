@@ -272,6 +272,8 @@ function Library.Section(Sectione)
 
         local Debounce = 0
         RightButton.MouseButton1Down:Connect(function()
+            Default = not Default
+
             if Debounce + 0.1 > os.clock() then return end
             local Visible, Hidden
             if Default then
@@ -302,7 +304,6 @@ function Library.Section(Sectione)
             wait(0.1)
 
             Hidden.Visible = false
-            Default = not Default
             Debounce = os.clock()
         end)
 
