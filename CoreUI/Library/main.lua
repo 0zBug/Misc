@@ -1,4 +1,3 @@
-
 local Library = {}
 
 local CoreGui = game:GetService("CoreGui")
@@ -34,7 +33,7 @@ function Library.Section(Sectione)
 
     local UIListLayout = Instance.new("UIListLayout", Frame)
     UIListLayout.Padding = UDim.new(0, 3)
-    UIListLayout.SortOrder = "Custom"
+    UIListLayout.SortOrder = "LayoutOrder"
     UIListLayout.VerticalAlignment = "Top"
     UIListLayout.HorizontalAlignment = "Center"
     UIListLayout.FillDirection = "Vertical"
@@ -77,7 +76,8 @@ function Library.Section(Sectione)
         local n = {} for i = 1, 9 do table.insert(n, string.char(string.sub(string.format("%09d", #Frame:GetChildren()), i, i) + 97)) end
 
         local Button = Instance.new("ImageButton", Frame)
-        Button.Name = table.concat(n, "")
+        Button.Name = "Button"
+        Button.LayoutOrder = #Frame:GetChildren()
         Button.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
         Button.BorderColor3 = Color3.fromRGB(27, 42, 53)
         Button.BorderSizePixel = 1
@@ -108,14 +108,12 @@ function Library.Section(Sectione)
     end
 
     Section.Switch = function(Text, Default, Callback)
-        local n = {} for i = 1, 9 do table.insert(n, string.char(string.sub(string.format("%09d", #Frame:GetChildren()), i, i) + 97)) end
-
         local SwitchFrame = Instance.new("ImageButton", Frame)
-        SwitchFrame.Name = table.concat(n, "")
+        SwitchFrame.Name = "Switch"
+        SwitchFrame.LayoutOrder = #Frame:GetChildren()
         SwitchFrame.Active = false
         SwitchFrame.BackgroundTransparency = 1.000
         SwitchFrame.BorderSizePixel = 0
-        SwitchFrame.LayoutOrder = 1
         SwitchFrame.Selectable = false
         SwitchFrame.Size = UDim2.new(1, 0, 0, 50)
         SwitchFrame.ZIndex = 2
@@ -345,8 +343,6 @@ function Library.Section(Sectione)
     end
 
     Section.Slider = function(Text, Default, Minimum, Maximum, Callback)
-        local n = {} for i = 1, 9 do table.insert(n, string.char(string.sub(string.format("%09d", #Frame:GetChildren()), i, i) + 97)) end
-
         local Default = Default or 1
         local Minimum = Minimum or 0
         local Maximum = Maximum or 10
@@ -361,11 +357,11 @@ function Library.Section(Sectione)
         local RightButton_2 = Instance.new("ImageLabel")
 
         local SliderFrame = Instance.new("ImageButton", Frame)
-        SliderFrame.Name = table.concat(n, "")
+        SliderFrame.Name = "Slide"
+        SliderFrame.LayoutOrder = #Frame:GetChildren()
         SliderFrame.Active = false
         SliderFrame.BackgroundTransparency = 1.000
         SliderFrame.BorderSizePixel = 0
-        SliderFrame.LayoutOrder = 5
         SliderFrame.Position = UDim2.new(0, 0, 0, 250)
         SliderFrame.Selectable = falsew
         SliderFrame.Size = UDim2.new(1, 0, 0, 50)
@@ -533,6 +529,47 @@ function Library.Section(Sectione)
                 end
             end
         end)
+    end
+
+    Section.Divider = function(Text, Description)
+        local TitleContainer = Instance.new("Frame", Frame)
+        TitleContainer.Name = "SectionTitle"
+        TitleContainer.BackgroundTransparency = 1
+        TitleContainer.LayoutOrder = #Frame:GetChildren()
+        TitleContainer.Size = UDim2.new(1, 0, 0, 36)
+        TitleContainer.ZIndex = 2
+
+        local Title = Instance.new("TextLabel", TitleContainer)
+        Title.Name = "Title"
+        Title.Font = Enum.Font.SourceSansBold
+        Title.Text = Text
+        Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Title.TextSize = 36
+        Title.TextWrapped = true
+        Title.TextXAlignment = Enum.TextXAlignment.Left
+        Title.TextYAlignment = Enum.TextYAlignment.Top
+        Title.BackgroundTransparency = 1
+        Title.Position = UDim2.fromOffset(10, 0)
+        Title.Size = UDim2.new(1, -10, 1, 0)
+        Title.ZIndex = 2
+
+        if Description then
+            local Body = Instance.new("TextLabel", Frame)
+            Body.LayoutOrder = #Frame:GetChildren()
+            Body.AutomaticSize = Enum.AutomaticSize.Y
+            Body.Name = "Body"
+            Body.Font = Enum.Font.SourceSans
+            Body.Text = "\t\t" .. string.gsub(Description, "\n", "\n\t\t")
+            Body.TextColor3 = Color3.fromRGB(255, 255, 255)
+            Body.TextSize = 24
+            Body.TextWrapped = true
+            Body.TextXAlignment = Enum.TextXAlignment.Left
+            Body.TextYAlignment = Enum.TextYAlignment.Top
+            Body.BackgroundTransparency = 1
+            Body.Position = UDim2.fromOffset(10, 0)
+            Body.Size = UDim2.new(1, -10, 0, 0)
+            Body.ZIndex = 2
+        end
     end
 
     return Section
