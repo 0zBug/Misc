@@ -913,5 +913,5 @@ return {
 	["😵"] = Color3.fromRGB(245, 58, 192),
 	["💕"] = Color3.fromRGB(227, 75, 60),
 	["🚣"] = Color3.fromRGB(155, 138, 176),
-	["📰"] = Color3.fromRGB(213, 215, 214),
+	["📰"] = Color3.fromRGB(213, 215, 214)
 }
