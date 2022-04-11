@@ -1,3 +1,5 @@
+-- Credits to picocode1
+
 local Invisible = {}
 
 local Characters = {}
