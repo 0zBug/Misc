@@ -24,18 +24,20 @@ local Classes = {
     "ColorCorrectionEffect", "SlidingBallConstraint", "SphereHandleAdornment", "PitchShiftSoundEffect", "DistortionSoundEffect", "NoCollisionConstraint", "DoubleConstrainedValue", "CylinderHandleAdornment", "UIAspectRatioConstraint", "ManualSurfaceJointInstance"
 }
 
-for _, Class in pairs(Classes) do
-	getfenv()[Class] = function(Properties)
-        local Object = Instance.new(Class)
+return function(Enviroment)
+    for _, Class in pairs(Classes) do
+        Enviroment[Class] = function(Properties)
+            local Object = Instance.new(Class)
 
-        for Property, Value in pairs(Properties) do
-            if pcall(function() local Property = Object[Property] end) then
-                Object[Property] = Value
-            else
-                Value.Parent = Object
+            for Property, Value in pairs(Properties) do
+                if pcall(function() local Property = Object[Property] end) then
+                    Object[Property] = Value
+                else
+                    Value.Parent = Object
+                end
             end
-        end
 
-        return Object
+            return Object
+        end
     end
 end
