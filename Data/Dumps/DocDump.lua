@@ -6015,5 +6015,5 @@ return {
 	["getsynasset"] = "Returns a Content string that can be used as a fake Asset ID for GUI elements. Please note this will only affect your client. Note: Certain instances only work with specific file types. For example, VideoFrame's only work with .webm encoded videos.",
 	["getspecialinfo"] = "Gets a list of special properties for MeshParts, UnionOperations, and Terrain instances.",
 	["saveinstance"] = "Saves the current game into your workspace folder. You can use table t to customize options for this.",
-	["messagebox"] = "Creates a message box with parameters text, caption and style.",
+	["messagebox"] = "Creates a message box with parameters text, caption and style."
 }
